@@ -1,0 +1,7 @@
+.venv/
+.pio/
+.platformio/
+research/
+__pycache__/
+.env
+

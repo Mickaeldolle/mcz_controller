@@ -1,0 +1,133 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:1184
+load:0x40078000,len:13232
+load:0x40080400,len:3028
+entry 0x400805e4
+MCZ RX ONLY RMT. r=brut; s=etat; d=diagnostic; t=capture; 0=MCZ; 1/2/3=garage. Aucun TX.
+CC1101 PART=00 VERSION=14
+RX_CONFIG FREQ_WORD=10B627 MDMCFG4=C6 FREND1=B6 BW_kHz=101.6
+CAPTURE=RMT tick_us=1 filter_apb_ticks=255 idle_us=3000 capacity_items=512
+RX READY 434.50MHz OOK RMT
+DIAG ON RSSI estime, non calibre
+Capture RMT brute armee
+RMT_CAPTURE t_ms=1854 pulses=36 idle_boundary_us=3000
+RX_BURST_BEGIN
++617
+-362
++103
+-776
++105
+-208
++259
+-1145
++104
+-412
++154
+-1093
++206
+-256
++308
+-312
++158
+-518
++520
+-259
++463
+-982
++884
+-157
++263
+-105
++1731
+-1005
++621
+-155
++367
+-204
++310
+-209
++1296
+-52
+RX_BURST_END
+DIAG t_ms=2853 FREQ_HZ=434500000 window_ms=1000 pulses=751 blocks=124 dropped=0 samples=98 spi_errors=0 STATE=0D VALID=0 RSSI_min=-101.0 RSSI_max=-92.5 dBm_est
+DIAG t_ms=3864 FREQ_HZ=434500000 window_ms=1000 pulses=849 blocks=177 dropped=0 samples=100 spi_errors=0 STATE=0D VALID=0 RSSI_min=-101.0 RSSI_max=-91.0 dBm_est
+Capture RMT brute armee
+DIAG t_ms=4875 FREQ_HZ=434500000 window_ms=1000 pulses=573 blocks=224 dropped=0 samples=100 spi_errors=0 STATE=0D VALID=0 RSSI_min=-101.5 RSSI_max=-87.5 dBm_est
+RMT_CAPTURE t_ms=5039 pulses=27 idle_boundary_us=3000
+RX_BURST_BEGIN
+-216
++956
+-264
++849
+-53
++999
+-158
++423
+-159
++1990
+-212
++159
+-159
++1105
+-53
++1056
+-527
++159
+-106
++1997
+-105
++999
+-210
++2272
+-107
++1532
+-156
+RX_BURST_END
+DIAG t_ms=5886 FREQ_HZ=434500000 window_ms=1000 pulses=560 blocks=264 dropped=0 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-101.5 RSSI_max=-93.0 dBm_est
+DIAG t_ms=6896 FREQ_HZ=434500000 window_ms=1000 pulses=676 blocks=329 dropped=0 samples=100 spi_errors=0 STATE=0D VALID=0 RSSI_min=-101.0 RSSI_max=-92.5 dBm_est
+Capture RMT brute armee
+STATE=0D VALID=0 FREQ_HZ=434500000 CAPTURE=RMT BLOCKS=377 DROPPED=0
+DIAG OFF
+RMT_CAPTURE t_ms=7939 pulses=35 idle_boundary_us=3000
+RX_BURST_BEGIN
+-271
++54
+-900
++54
+-1268
++52
+-1456
++311
+-985
++157
+-684
++53
+-320
++527
+-1098
++210
+-740
++263
+-582
++263
+-584
++157
+-157
++526
+-314
++212
+-578
++157
+-210
++265
+-265
++268
+-215
++582
+-105
+RX_BURST_END

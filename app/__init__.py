@@ -1,0 +1,1 @@
+"""Local USB control application."""

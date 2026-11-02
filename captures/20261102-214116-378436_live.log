@@ -1,0 +1,48 @@
+2026-11-02T21:41:16.378+01:00  MCZ - ECOUTE SEULE sur COM3. Ctrl+C pour arreter.
+2026-11-02T21:41:16.378+01:00  Chaque RX est une trame ; un appui peut produire 5 repetitions.
+2026-11-02T21:41:16.378+01:00  Heure et delais mesures sur le PC apres decodage et transport USB, pas a l'antenne.
+2026-11-02T21:41:16.379+01:00  L'ouverture USB peut redemarrer l'ESP32. Aucun ordre Allumer/Eteindre n'est envoye.
+2026-11-02T21:41:16.379+01:00  Journal : C:\Users\dolle\development\mcz_musa\captures\20261102-214116-378436_live.log
+2026-11-02T21:41:17.084+01:00  RX READY 434.50MHz OOK RMT
+2026-11-02T21:41:18.409+01:00  USB : RX PRET | frequence=434500000 Hz | compteur TX=0
+2026-11-02T21:41:18.415+01:00  STATE=0D VALID=0 FREQ_HZ=434500000 CAPTURE=RMT BLOCKS=54 DROPPED=0
+2026-11-02T21:41:25.678+01:00  RX #0001    premiere  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:25.760+01:00  RX #0002      +78 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:25.843+01:00  RX #0003      +93 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:25.924+01:00  RX #0004      +79 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:26.007+01:00  RX #0005      +78 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:26.441+01:00  En ecoute... 5 trame(s) | statut USB recent
+2026-11-02T21:41:31.283+01:00  RX #0006    +5281 ms  C8 CC 02 8C B8 DB 45  [Eteindre enregistre] CRC=OK
+2026-11-02T21:41:31.365+01:00  RX #0007      +78 ms  C8 CC 02 8C B8 DB 45  [Eteindre enregistre] CRC=OK
+2026-11-02T21:41:31.447+01:00  RX #0008      +78 ms  C8 CC 02 8C B8 DB 45  [Eteindre enregistre] CRC=OK
+2026-11-02T21:41:31.530+01:00  RX #0009      +94 ms  C8 CC 02 8C B8 DB 45  [Eteindre enregistre] CRC=OK
+2026-11-02T21:41:31.612+01:00  RX #0010      +78 ms  C8 CC 02 8C B8 DB 45  [Eteindre enregistre] CRC=OK
+2026-11-02T21:41:35.898+01:00  RX #0011    +4281 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:35.981+01:00  RX #0012      +94 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:36.063+01:00  RX #0013      +78 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:36.145+01:00  RX #0014      +78 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:36.229+01:00  RX #0015      +78 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:36.451+01:00  En ecoute... 15 trame(s) | statut USB recent
+2026-11-02T21:41:40.650+01:00  RX #0016    +4422 ms  C8 CC 02 AF B8 88 F0  [autre trame] CRC=OK
+2026-11-02T21:41:40.731+01:00  RX #0017      +94 ms  C8 CC 02 AF B8 88 F0  [autre trame] CRC=OK
+2026-11-02T21:41:40.814+01:00  RX #0018      +78 ms  C8 CC 02 AF B8 88 F0  [autre trame] CRC=OK
+2026-11-02T21:41:40.896+01:00  RX #0019      +78 ms  C8 CC 02 AF B8 88 F0  [autre trame] CRC=OK
+2026-11-02T21:41:40.979+01:00  RX #0020      +78 ms  C8 CC 02 AF B8 88 F0  [autre trame] CRC=OK
+2026-11-02T21:41:45.292+01:00  RX #0021    +4313 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:45.376+01:00  RX #0022      +94 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:45.457+01:00  RX #0023      +78 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:45.540+01:00  RX #0024      +78 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:45.623+01:00  RX #0025      +94 ms  C8 CC 02 8F B8 8E 16  [Allumer enregistre] CRC=OK
+2026-11-02T21:41:46.490+01:00  En ecoute... 25 trame(s) | statut USB recent
+2026-11-02T21:41:49.337+01:00  RX #0026    +3703 ms  C8 CC 02 6F B8 9E A4  [autre trame] CRC=OK
+2026-11-02T21:41:49.420+01:00  RX #0027      +94 ms  C8 CC 02 6F B8 9E A4  [autre trame] CRC=OK
+2026-11-02T21:41:49.501+01:00  RX #0028      +78 ms  C8 CC 02 6F B8 9E A4  [autre trame] CRC=OK
+2026-11-02T21:41:49.585+01:00  RX #0029      +78 ms  C8 CC 02 6F B8 9E A4  [autre trame] CRC=OK
+2026-11-02T21:41:49.667+01:00  RX #0030      +78 ms  C8 CC 02 6F B8 9E A4  [autre trame] CRC=OK
+2026-11-02T21:41:53.482+01:00  RX #0031    +3828 ms  C8 CC 02 4F B8 98 42  [autre trame] CRC=OK
+2026-11-02T21:41:53.563+01:00  RX #0032      +78 ms  C8 CC 02 4F B8 98 42  [autre trame] CRC=OK
+2026-11-02T21:41:53.646+01:00  RX #0033      +78 ms  C8 CC 02 4F B8 98 42  [autre trame] CRC=OK
+2026-11-02T21:41:53.728+01:00  RX #0034      +78 ms  C8 CC 02 4F B8 98 42  [autre trame] CRC=OK
+2026-11-02T21:41:53.810+01:00  RX #0035      +94 ms  C8 CC 02 4F B8 98 42  [autre trame] CRC=OK
+2026-11-02T21:41:56.546+01:00  En ecoute... 35 trame(s) | statut USB recent
+2026-11-02T21:42:03.125+01:00  Ecoute terminee. 35 trame(s) valide(s). Port USB libere.

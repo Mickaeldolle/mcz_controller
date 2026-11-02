@@ -1,0 +1,333 @@
+{
+  "warning": "Offline hypotheses. Only complete frames passing framing, parity and CRC are valid.",
+  "captures": [
+    {
+      "file": "20261030-124843_buttons.log",
+      "blocks": 10,
+      "pulses": 1342,
+      "prefix_count_85_to_115ms": 0,
+      "prefix_median_us": null,
+      "prefix_min_us": null,
+      "prefix_max_us": null,
+      "pulses_under_250us_percent": 0.0,
+      "adjacent_same_sign": 0,
+      "duration_histogram_50us": {
+        "400": 655,
+        "1250": 70,
+        "450": 117,
+        "850": 195,
+        "350": 90,
+        "800": 150,
+        "900": 55
+      },
+      "decode_hypotheses": [
+        {
+          "mode": "raw",
+          "half_us": 400,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "raw",
+          "half_us": 414,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "raw",
+          "half_us": 428,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "merge_same_level",
+          "half_us": 400,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "merge_same_level",
+          "half_us": 414,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "merge_same_level",
+          "half_us": 428,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_80us",
+          "half_us": 400,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_80us",
+          "half_us": 414,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_80us",
+          "half_us": 428,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_120us",
+          "half_us": 400,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_120us",
+          "half_us": 414,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_120us",
+          "half_us": 428,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_180us",
+          "half_us": 400,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_180us",
+          "half_us": 414,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_180us",
+          "half_us": 428,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_240us",
+          "half_us": 400,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_240us",
+          "half_us": 414,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        },
+        {
+          "mode": "glitch_under_240us",
+          "half_us": 428,
+          "crc_valid_frames": [
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8F B8 8E 16",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45",
+            "C8 CC 02 8C B8 DB 45"
+          ],
+          "longest_consecutive_bytes_with_framing": 7
+        }
+      ]
+    }
+  ]
+}

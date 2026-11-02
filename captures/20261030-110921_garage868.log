@@ -1,0 +1,69 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:1184
+load:0x40078000,len:13232
+load:0x40080400,len:3028
+entry 0x400805e4
+MCZ RX ONLY. r=brut; s=etat; d=diagnostic; t=capture; 0=MCZ; 1/2/3=garage 868. Aucun TX.
+CC1101 PART=00 VERSION=14
+RX_CONFIG FREQ_WORD=10B627 MDMCFG4=C6 FREND1=B6 BW_kHz=101.6
+RX READY 434.50MHz OOK
+DIAG ON RSSI estime, non calibre
+RX_PROFILE OK FREQ_HZ=868300000 STATE=0D
+TEST_WINDOW FREQ_HZ=868300000 seconds=15
+DIAG t_ms=2853 FREQ_HZ=868300000 window_ms=1000 edges=8 samples=100 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-106.5 dBm_est
+DIAG t_ms=3853 FREQ_HZ=868300000 window_ms=1000 edges=13 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-114.0 RSSI_max=-111.5 dBm_est
+DIAG t_ms=4853 FREQ_HZ=868300000 window_ms=1000 edges=551 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-74.0 dBm_est
+DIAG t_ms=5853 FREQ_HZ=868300000 window_ms=1000 edges=274 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-73.5 dBm_est
+DIAG t_ms=6853 FREQ_HZ=868300000 window_ms=1000 edges=24 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=7853 FREQ_HZ=868300000 window_ms=1000 edges=16 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=8853 FREQ_HZ=868300000 window_ms=1000 edges=12 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=9853 FREQ_HZ=868300000 window_ms=1000 edges=11 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.0 dBm_est
+DIAG t_ms=10853 FREQ_HZ=868300000 window_ms=1000 edges=822 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-73.0 dBm_est
+DIAG t_ms=11853 FREQ_HZ=868300000 window_ms=1000 edges=16 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-114.0 RSSI_max=-105.0 dBm_est
+DIAG t_ms=12853 FREQ_HZ=868300000 window_ms=1000 edges=11 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=13853 FREQ_HZ=868300000 window_ms=1000 edges=10 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=14853 FREQ_HZ=868300000 window_ms=1000 edges=4 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=15853 FREQ_HZ=868300000 window_ms=1000 edges=524 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-72.0 dBm_est
+DIAG t_ms=16853 FREQ_HZ=868300000 window_ms=1000 edges=313 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-71.5 dBm_est
+RX_PROFILE OK FREQ_HZ=868950000 STATE=0D
+TEST_WINDOW FREQ_HZ=868950000 seconds=15
+DIAG t_ms=18418 FREQ_HZ=868950000 window_ms=1000 edges=62 samples=100 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-106.5 dBm_est
+DIAG t_ms=19418 FREQ_HZ=868950000 window_ms=1000 edges=64 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=20418 FREQ_HZ=868950000 window_ms=1000 edges=59 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=21418 FREQ_HZ=868950000 window_ms=1000 edges=61 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=22418 FREQ_HZ=868950000 window_ms=1000 edges=632 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-70.5 dBm_est
+DIAG t_ms=23418 FREQ_HZ=868950000 window_ms=1000 edges=253 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-71.0 dBm_est
+DIAG t_ms=24418 FREQ_HZ=868950000 window_ms=1000 edges=57 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=25418 FREQ_HZ=868950000 window_ms=1000 edges=63 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=26418 FREQ_HZ=868950000 window_ms=1000 edges=56 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=27418 FREQ_HZ=868950000 window_ms=1000 edges=53 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=28418 FREQ_HZ=868950000 window_ms=1000 edges=836 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-70.5 dBm_est
+DIAG t_ms=29418 FREQ_HZ=868950000 window_ms=1000 edges=59 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-108.5 dBm_est
+DIAG t_ms=30418 FREQ_HZ=868950000 window_ms=1000 edges=66 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-114.0 RSSI_max=-111.0 dBm_est
+DIAG t_ms=31418 FREQ_HZ=868950000 window_ms=1000 edges=67 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=32418 FREQ_HZ=868950000 window_ms=1000 edges=72 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+RX_PROFILE OK FREQ_HZ=869850000 STATE=0D
+TEST_WINDOW FREQ_HZ=869850000 seconds=15
+DIAG t_ms=33983 FREQ_HZ=869850000 window_ms=1000 edges=321 samples=100 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-73.0 dBm_est
+DIAG t_ms=34983 FREQ_HZ=869850000 window_ms=1000 edges=512 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-71.0 dBm_est
+DIAG t_ms=35983 FREQ_HZ=869850000 window_ms=1000 edges=18 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=36983 FREQ_HZ=869850000 window_ms=1000 edges=18 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.0 dBm_est
+DIAG t_ms=37983 FREQ_HZ=869850000 window_ms=1000 edges=14 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=38983 FREQ_HZ=869850000 window_ms=1000 edges=16 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=39983 FREQ_HZ=869850000 window_ms=1000 edges=12 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.0 dBm_est
+DIAG t_ms=40983 FREQ_HZ=869850000 window_ms=1000 edges=13 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=41983 FREQ_HZ=869850000 window_ms=1000 edges=27 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.0 dBm_est
+DIAG t_ms=42983 FREQ_HZ=869850000 window_ms=1000 edges=28 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=43983 FREQ_HZ=869850000 window_ms=1000 edges=19 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=44983 FREQ_HZ=869850000 window_ms=1000 edges=11 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=45983 FREQ_HZ=869850000 window_ms=1000 edges=19 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=46983 FREQ_HZ=869850000 window_ms=1000 edges=26 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.5 dBm_est
+DIAG t_ms=47983 FREQ_HZ=869850000 window_ms=1000 edges=18 samples=99 spi_errors=0 STATE=0D VALID=0 RSSI_min=-113.5 RSSI_max=-111.0 dBm_est
+RX_PROFILE OK FREQ_HZ=434500000 STATE=0D
+DIAG OFF
+STATE=0D VALID=0 FREQ_HZ=434500000

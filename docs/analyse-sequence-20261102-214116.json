@@ -1,0 +1,145 @@
+{
+  "source": "captures\\20261102-214116-378436_live.log",
+  "user_sequence": [
+    "ON",
+    "OFF",
+    "ON",
+    "Ventilation +",
+    "Ventilation - (1)",
+    "Ventilation - (2)",
+    "Ventilation - (3)"
+  ],
+  "frames": 35,
+  "groups": 7,
+  "crc_valid": 35,
+  "continuous_sequence": true,
+  "events": [
+    {
+      "action": "ON",
+      "first_received": "2026-11-02T21:41:25.678+01:00",
+      "last_received": "2026-11-02T21:41:26.007+01:00",
+      "count": 5,
+      "frame_counts": {
+        "C8 CC 02 8F B8 8E 16": 5
+      },
+      "id": "C8CC02",
+      "mode": 3,
+      "power": 3,
+      "fan1": 4,
+      "fan2": 7,
+      "user_bits": 2,
+      "reserved": 0
+    },
+    {
+      "action": "OFF",
+      "first_received": "2026-11-02T21:41:31.283+01:00",
+      "last_received": "2026-11-02T21:41:31.612+01:00",
+      "count": 5,
+      "frame_counts": {
+        "C8 CC 02 8C B8 DB 45": 5
+      },
+      "id": "C8CC02",
+      "mode": 0,
+      "power": 3,
+      "fan1": 4,
+      "fan2": 7,
+      "user_bits": 2,
+      "reserved": 0
+    },
+    {
+      "action": "ON",
+      "first_received": "2026-11-02T21:41:35.898+01:00",
+      "last_received": "2026-11-02T21:41:36.229+01:00",
+      "count": 5,
+      "frame_counts": {
+        "C8 CC 02 8F B8 8E 16": 5
+      },
+      "id": "C8CC02",
+      "mode": 3,
+      "power": 3,
+      "fan1": 4,
+      "fan2": 7,
+      "user_bits": 2,
+      "reserved": 0
+    },
+    {
+      "action": "Ventilation +",
+      "first_received": "2026-11-02T21:41:40.650+01:00",
+      "last_received": "2026-11-02T21:41:40.979+01:00",
+      "count": 5,
+      "frame_counts": {
+        "C8 CC 02 AF B8 88 F0": 5
+      },
+      "id": "C8CC02",
+      "mode": 3,
+      "power": 3,
+      "fan1": 5,
+      "fan2": 7,
+      "user_bits": 2,
+      "reserved": 0
+    },
+    {
+      "action": "Ventilation - (1)",
+      "first_received": "2026-11-02T21:41:45.292+01:00",
+      "last_received": "2026-11-02T21:41:45.623+01:00",
+      "count": 5,
+      "frame_counts": {
+        "C8 CC 02 8F B8 8E 16": 5
+      },
+      "id": "C8CC02",
+      "mode": 3,
+      "power": 3,
+      "fan1": 4,
+      "fan2": 7,
+      "user_bits": 2,
+      "reserved": 0
+    },
+    {
+      "action": "Ventilation - (2)",
+      "first_received": "2026-11-02T21:41:49.337+01:00",
+      "last_received": "2026-11-02T21:41:49.667+01:00",
+      "count": 5,
+      "frame_counts": {
+        "C8 CC 02 6F B8 9E A4": 5
+      },
+      "id": "C8CC02",
+      "mode": 3,
+      "power": 3,
+      "fan1": 3,
+      "fan2": 7,
+      "user_bits": 2,
+      "reserved": 0
+    },
+    {
+      "action": "Ventilation - (3)",
+      "first_received": "2026-11-02T21:41:53.482+01:00",
+      "last_received": "2026-11-02T21:41:53.810+01:00",
+      "count": 5,
+      "frame_counts": {
+        "C8 CC 02 4F B8 98 42": 5
+      },
+      "id": "C8CC02",
+      "mode": 3,
+      "power": 3,
+      "fan1": 2,
+      "fan2": 7,
+      "user_bits": 2,
+      "reserved": 0
+    }
+  ],
+  "wall_clock_repetition_intervals_ms": {
+    "min": 81.0,
+    "max": 84.0,
+    "mean": 82.39285714285714
+  },
+  "clock_info": {
+    "monotonic": {
+      "implementation": "GetTickCount64()",
+      "resolution_seconds": 0.015625
+    },
+    "perf_counter": {
+      "implementation": "QueryPerformanceCounter()",
+      "resolution_seconds": 1e-07
+    }
+  }
+}
