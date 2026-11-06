@@ -17,6 +17,20 @@ de distinguer une association perdue, un état bloquant du poêle, un défaut du
 chemin de réception et une émission d'origine dégradée mais encore décodable
 par notre récepteur. Aucune de ces causes n'est encore établie.
 
+**Résultat local également confirmé : le poêle démarre avec le sélecteur sur
+ON, mais ne réagit pas à l'appui ON de la télécommande lorsque le sélecteur
+est sur REMOTE.** Le démarrage local fonctionne donc ; la recherche se concentre
+sur le chemin de commande distant. Cela ne prouve pas que toute l'électronique
+du poêle est saine, ni que le signal RF n'arrive jamais à son récepteur : une
+trame reçue mais ignorée produit aussi une absence de réaction observable.
+
+**Appairage également tenté : l'utilisateur confirme l'affichage « --- », puis
+un appui ON/OFF de la télécommande, sans bip ni confirmation d'association.**
+L'entrée en apprentissage est constatée, mais l'apprentissage n'a pas abouti.
+La simple hypothèse d'un identifiant oublié ne suffit donc plus à orienter
+l'action : il faut comprendre pourquoi la tentative d'association n'est pas
+confirmée. Aucune panne matérielle précise n'est encore démontrée.
+
 Les captures réelles établissent que la télécommande émet et que notre ESP32
 les décode. Elles ne prouvent ni que notre CC1101 émet correctement, ni que
 le récepteur du poêle reçoit notre montage, ni que l'identifiant est encore
@@ -29,8 +43,18 @@ qu'il résoudra la panne. Il devra reproduire les dernières commandes manuelles
 capturées : **ON, puissance 1, ventilation 1 à 2**, puis l'arrêt correspondant.
 Une migration ESPHome ou Home Assistant ne lève pas à elle seule cette incertitude.
 
-Ce document propose des actions ; sa rédaction n'a ni changé les profils
-actifs, ni reflashé la carte, ni envoyé de commande radio.
+### Mise à jour : premier essai ESP32 effectué
+
+Le [premier essai d'appairage ESP32](ESSAI_TX_20261102_APPARIAGE.md) est négatif
+côté poêle : « --- » est resté affiché sans bip, à moins d'un mètre sans obstacle.
+Côté firmware, la commande unique a retourné `sent`, le compteur TX est passé
+de 0 à 1 et un nouveau statut a confirmé le retour RX prêt. Ce résultat
+remplace l'état antérieur où aucun envoi n'avait été effectué ; il ne remplace
+pas une mesure indépendante de l'émission RF. La priorité suivante est de
+qualifier notre propre signal émis et de recouper la procédure d'apprentissage.
+
+Les profils actifs n'ont pas été remplacés et la carte n'a pas été reflashée
+pendant cette étude. L'essai radio unique est distingué et consigné ci-dessus.
 
 ## 2. Ce qui existe déjà
 
@@ -110,11 +134,11 @@ d'une panne et elle ne justifie pas une augmentation automatique. La valeur
 
 | Réf. | Point | Nature et impact | Comment le lever |
 |---|---|---|---|
-| B01 | Réaction physique aux commandes ESP32 non démontrée | Blocage de qualification fonctionnelle | Un essai supervisé ON puis OFF, observation de l'afficheur/cycle, preuve consignée |
+| B01 | Appairage ESP32 essayé sans réaction ; allumage et extinction normaux encore non validés | Blocage fonctionnel confirmé pour cet essai d'apprentissage | Qualifier le TX RF et la procédure avant un nouvel essai justifié, puis observer un cycle ON/OFF normal si la commande devient acceptée |
 | B02 | Profils actifs différents du scénario manuel retenu | Écart réel de configuration ; ne bloque pas toute émission mais bloque un essai manuel maîtrisé | Choisir explicitement les trames manuelles capturées et vérifier leurs CRC/provenance avant utilisation |
 | B03 | Tests de provenance liés au format historique et aux anciens profils | Adaptation logicielle nécessaire si B02 est appliqué | Accepter les nouveaux journaux live et mettre à jour les attentes fixes ; détail dans le guide |
 | B04 | Sortie TX électrique/RF non caractérisée | Inconnue matérielle ; RX et compilation ne suffisent pas | Si l'essai physique échoue, comparer la sortie et le signal reçu par un récepteur indépendant |
-| B05 | Poêle sans réaction à la télécommande d'origine malgré des trames reçues par l'ESP32 | Échec du contrôle d'origine confirmé par l'utilisateur ; cause non isolée, priorité de diagnostic | Vérifier commande locale, REMOTE, alarmes, puis procédure d'association exacte et chemin RF ; ne pas conclure directement à un récepteur défectueux |
+| B05 | ON local fonctionnel, télécommande ignorée en REMOTE et association sans confirmation malgré « --- » puis ON/OFF | Défaut de commande distante et échec d'apprentissage confirmés ; cause non isolée | Vérifier l'adéquation de la procédure à la génération, puis comparer l'émission d'origine à un TX ESP32 qualifié et examiner réception/décodage/apprentissage côté poêle |
 | B06 | Pas d'accusé d'exécution du poêle dans notre système | Limite de supervision, pas un obstacle au premier essai présentiel | Observer le poêle ; ajouter plus tard une mesure indépendante si nécessaire |
 | B07 | Possibilité de commandes concurrentes depuis la télécommande | Risque d'écrasement des réglages ou de confusion | Après le contrôle de référence, poser la télécommande sans l'actionner ; pour un essai manuel isolé, retirer temporairement ses piles si nécessaire |
 | B08 | Un seul propriétaire de COM3 | Contrainte opérationnelle vérifiée | Arrêter moniteur/capture avant le serveur et réciproquement |
@@ -165,18 +189,31 @@ réduite ou une dégradation RF que le récepteur du poêle tolère moins bien. 
 association perdue, une mauvaise position du sélecteur, une alarme ou un défaut
 de réception restent également des pistes, pas des diagnostics acquis.
 
-Le premier résultat discriminant est le fonctionnement depuis les commandes
-locales du poêle. Si elles ne fonctionnent pas non plus, ne pas réduire la panne
-à la radio : vérifier l'état du poêle et faire intervenir son mainteneur si
-nécessaire. Si elles fonctionnent, le diagnostic peut se concentrer sur le
-chemin de commande distant. L'appairage doit être essayé selon la notice exacte,
-avec observation de sa confirmation, avant de conclure à une panne du récepteur.
+Le premier résultat discriminant est acquis : le sélecteur sur ON déclenche
+le démarrage local. Le sélecteur placé sur REMOTE ne permet pas d'obtenir
+l'allumage avec la télécommande. La tentative d'association a maintenant aussi
+été décrite : affichage « --- », appui ON/OFF, aucun bip ni confirmation.
+Il reste à vérifier les détails de la notice exacte, mais il ne faut plus
+présenter l'appairage comme un test encore jamais tenté.
+
+Deux branches restent prioritaires : l'émission d'origine peut être dégradée
+ou mal reçue par le poêle malgré notre décodage ; le chemin de réception,
+de décodage ou d'apprentissage du poêle peut être en défaut. L'affichage « --- »
+démontre l'entrée dans un état d'apprentissage, pas le fonctionnement du
+récepteur RF ni l'enregistrement effectif de l'identifiant.
+
+Un test de substitution avec l'ESP32 peut aider à départager les branches :
+si le poêle accepte son émission, une réception distante fonctionne ; s'il
+l'ignore aussi, il faut qualifier notre propre TX avant de conclure à une
+panne du poêle. Une sortie GPIO ou un résultat `sent` ne suffit pas.
 
 Il n'est pas établi qu'un nouvel appairage soit nécessaire. Nous réutilisons
 l'ID d'origine ; il faut d'abord tester cet ID avant d'en changer ou de
-modifier l'association. Aucun appui long capturé jusqu'ici n'a été effectué
-avec le poêle confirmé en mode « --- » ; aucune trame d'appairage spécifique
-n'est identifiée.
+modifier l'association. L'appui long enregistré par nos outils avait été fait
+hors apprentissage ; la tentative en « --- » est confirmée par l'utilisateur
+mais ne dispose pas d'une capture synchronisée identifiée. Aucune trame
+d'appairage spécifique n'est établie et aucune n'est inventée pour compenser
+l'absence de confirmation.
 
 ## 5. Contrôles réalisés pour ce bilan
 
@@ -205,8 +242,8 @@ Les résultats de capture détaillés sont dans
 ## 6. Recommandation, sécurité et alternatives
 
 Ordre recommandé : établir le fonctionnement des commandes locales et l'état
-REMOTE/alarmes ; vérifier l'association selon la notice exacte ; puis, si
-nécessaire, comparer la chaîne RF avec un essai ESP32 maîtrisé. Le choix du
+REMOTE/alarmes ; recouper la tentative d'association déjà échouée avec la notice
+exacte ; puis comparer la chaîne RF avec un essai ESP32 maîtrisé. Le choix du
 profil manuel et l'adaptation des tests préparent cet essai, mais ne réparent
 pas un récepteur du poêle défaillant. Un échec commun des deux émetteurs n'en
 constitue pas non plus une preuve suffisante sans contrôler notre propre TX.

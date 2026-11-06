@@ -1,0 +1,13 @@
+2026-11-02T22:43:07.846+01:00  ESSAI ESP32 : aucune emission avant ENVOYER. Journal : C:\Users\dolle\development\mcz_musa\captures\20261102-224307-845233_pairing.log
+2026-11-02T22:43:10.013+01:00  PRET : USB/RX connecte. {"connected": true, "busy": false, "cooldown": 0, "profiles_ready": true, "last": null, "port": "COM3", "tx_count": 0}
+2026-11-02T22:43:10.013+01:00  Trame prevue : C8 CC 02 45 B8 77 89 ; une commande, cinq repetitions.
+2026-11-02T22:43:10.013+01:00  Ce rejeu est un essai d'apprentissage, pas une trame speciale identifiee.
+2026-11-02T22:43:10.014+01:00  Mettre le poele en apprentissage selon sa notice ; attendre les trois traits ---.
+2026-11-02T22:43:10.015+01:00  La commande peut declencher un allumage. Rester devant le poele.
+2026-11-02T22:46:39.464+01:00  ENVOI UNIQUE id=e364862ff9070f7cef6a35a27f97bc11 trame=C8CC0245B87789 TX_avant=0
+2026-11-02T22:46:40.004+01:00  RESULTAT USB : {"id": "e364862ff9070f7cef6a35a27f97bc11", "action": "on", "result": "sent"}
+2026-11-02T22:46:41.063+01:00  STATUT APRES : {"connected": true, "busy": false, "cooldown": 1.3910000000614673, "profiles_ready": true, "last": {"id": "e364862ff9070f7cef6a35a27f97bc11", "action": "on", "result": "sent"}, "port": "COM3", "tx_count": 1}
+2026-11-02T22:46:41.063+01:00  Aucun renvoi automatique. Relever bip, disparition de --- et reaction du poele.
+2026-11-02T22:46:41.064+01:00  Bilan technique : signal termine, compteur +1 et retour RX confirme.
+2026-11-02T22:46:41.064+01:00  Ce bilan n'est pas un accuse de reception du poele.
+2026-11-02T22:46:41.247+01:00  Port USB libere.

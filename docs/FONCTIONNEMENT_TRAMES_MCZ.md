@@ -385,6 +385,12 @@ Aucune commande d'appairage distincte n'est identifiée à ce jour. On ne peut
 pas non plus conclure qu'une commande normale suffit à l'apprentissage sans
 réaliser l'essai approprié et observer la confirmation du poêle.
 
+Précision ultérieure de l'utilisateur : une tentative avec « --- » affiché,
+puis appui ON/OFF, a bien été réalisée, sans bip ni confirmation. Elle n'a pas
+de capture RF synchronisée identifiée. L'association a donc été tentée sans
+succès, tandis que l'appui long que nous avons enregistré reste un essai hors
+appairage. Ce sont deux observations distinctes.
+
 ## 11. Lire les journaux et interpréter leurs limites
 
 Le parcours de réception actuel est :
@@ -438,10 +444,12 @@ de statut `j` et `s`, sans commande d'émission radio.
 | Mode 2 et signification opérationnelle de mode 3 | Noms issus des sources ; qualification fonctionnelle dédiée à compléter |
 | Ventilation 2=7, champ user et bits réservés | Valeurs observables, interprétation fonctionnelle incomplète |
 | Consigne de température et régulation | Hypothèse à qualifier par capture dédiée |
-| Appairage | Aucune trame spécifique identifiée ; essai en mode appairage non établi |
-| Exécution par le poêle des émissions ESP32 | À vérifier séparément ; ni CRC ni log USB ne sont des accusés de réception |
+| Appairage | Tentative d'origine sans confirmation ; essai ESP32 d'une capture ON également sans réaction ; aucune trame spécifique identifiée |
+| Exécution par le poêle des émissions ESP32 | Premier essai en apprentissage sans réaction malgré `sent` et compteur +1 ; sortie RF non mesurée indépendamment |
 
 ### Captures et analyses du projet
+
+- [Premier essai d'appairage ESP32](ESSAI_TX_20261102_APPARIAGE.md) : commande unique traitée par le firmware, sans confirmation du poêle.
 
 - [Séquence de puissance manuelle](ANALYSE_MANUEL_20261102_215528.md) : 50 trames.
 - [Séquence ON/OFF et ventilation](ANALYSE_SEQUENCE_20261102_214116.md) : 35 trames.

@@ -19,6 +19,16 @@ de notre émetteur est donc conditionnel au fonctionnement du chemin de récepti
 et à l'acceptation des commandes par le poêle. Avant de traiter cette procédure
 comme une mise en service, suivre le diagnostic préalable ci-dessous.
 
+Le démarrage local est maintenant confirmé : sélecteur sur ON, le poêle
+démarre ; sélecteur sur REMOTE, l'appui ON de la télécommande ne déclenche
+pas d'allumage. Il s'agit d'une absence de réaction constatée, sans preuve
+permettant encore de distinguer absence de réception et commande ignorée.
+
+L'utilisateur confirme aussi une tentative d'association avec « --- » affiché,
+puis ON/OFF sur la télécommande, sans bip ni confirmation. Ce résultat est
+acquis ; la procédure ci-dessous ne doit pas demander de refaire cet essai
+à l'identique sans nouvelle hypothèse ou contrôle discriminant.
+
 Le premier profil retenu est : ID C8CC02, mode manuel 1, puissance 1,
 ventilation 1 à 2, paramètres complémentaires inchangés par rapport à la capture.
 Ce choix reproduit un réglage réellement émis, sans thermostat à reconstruire
@@ -26,17 +36,57 @@ et sans générer de paramètres non observés.
 
 ## 2. Préparer le matériel et un état de départ connu
 
+### Résultat du premier essai exécuté
+
+Le [2 novembre à 22:46](ESSAI_TX_20261102_APPARIAGE.md), l'envoi unique
+ESP32 de la trame manuelle ON a retourné `sent`, compteur TX de 0 à 1 et
+nouveau statut RX prêt. Le poêle en apprentissage n'a pas réagi : « --- »
+est resté affiché sans bip, à moins d'un mètre et sans obstacle.
+Le port a été libéré, sans nouvel envoi. Avant de répéter cet essai,
+la priorité est de qualifier indépendamment la sortie RF et de recouper
+la procédure d'apprentissage exacte ; le résultat logiciel ne suffit pas.
+
+### Essai d'appairage isolé disponible depuis le 2 novembre
+
+L'outil `tools/pair_once.py`, lancé par `Appairer-MCZ.cmd`, permet maintenant
+de tester le rejeu ON manuel sans changer les profils actifs de l'application
+ni leurs tests historiques. Il utilise
+[les profils manuels séparés](../config/manual_capture_profiles.json), vérifie
+leurs CRC et leur présence dans le journal source, ouvre COM3 et attend un
+statut prêt. Aucun ordre TX n'est envoyé à cette préparation.
+
+Quand le poêle affiche « --- » et que l'opérateur est présent, saisir
+`ENVOYER` dans cet outil déclenche **une seule commande**, contenant les cinq
+répétitions de `C8 CC 02 45 B8 77 89`. Toute autre réponse annule. Une panne
+ou un résultat incertain n'entraîne aucun renvoi. Le résultat USB, le compteur
+TX et un statut reçu après l'envoi sont consignés dans `captures/*_pairing.log`.
+L'observation du bip, de l'afficheur et de la réaction physique reste nécessaire.
+
+Ce chemin suffit pour l'essai d'appairage : les étapes 3 à 5 de modification
+des profils de l'application ne sont pas nécessaires à cet outil isolé.
+Ce n'est pas une nouvelle trame d'apprentissage : nous testons une capture ON
+connue. Son acceptation pendant l'apprentissage n'est pas encore démontrée.
+
+Le câblage reste GDO0 ↔ GPIO27. Le firmware bascule cette liaison de RX vers
+TX, puis revient en RX. Il n'existe pas de mode TX permanent à activer avant
+l'essai ni de fil à déplacer. Pendant que cet outil possède COM3, fermer le
+moniteur et le serveur MCZ. L'ouverture USB peut redémarrer l'ESP32 ; aucun
+envoi n'a lieu au démarrage.
+
 ### Diagnostic préalable dans la situation actuelle
 
-- Établir si les commandes du panneau local/de secours fonctionnent, d'après
-  les essais déjà réalisés ou selon la notice et dans des conditions adaptées.
-  Un échec local oriente vers l'état général du poêle ; la radio n'est alors
-  pas l'unique piste à examiner.
+- Résultat déjà établi : le démarrage local fonctionne avec le sélecteur sur
+  ON. Ne pas répéter ce démarrage pour obtenir de nouveau cette information.
+  La recherche se concentre maintenant sur la commande distante en REMOTE.
 - Vérifier visuellement le sélecteur REMOTE et relever toute alarme ou état
   qui inhibe normalement une commande. Ne pas contourner les sécurités.
-- Si le contrôle local fonctionne, appliquer la procédure d'association de
-  la notice exacte et noter sa confirmation ou son absence. La procédure
-  précise peut dépendre de la génération ; aucune trame spéciale n'est inventée.
+- Une association a déjà échoué malgré l'affichage « --- » puis ON/OFF.
+  Recouper les détails avec la notice exacte, sans supposer une panne du
+  récepteur sur ce seul résultat et sans inventer de trame d'apprentissage.
+- Pour progresser, comparer l'émission d'origine à un essai ESP32 maîtrisé.
+  Si l'ESP32 fonctionne, une commande RF peut être acceptée par le poêle.
+  Si les deux sont ignorés, vérifier la sortie RF de notre montage avant
+  d'attribuer définitivement la panne au poêle.
 - Si la télécommande reste ignorée, un essai ESP32 est un test de substitution
   d'émetteur, dont le succès ne peut être promis. Sa sortie RF doit être
   qualifiée si l'essai échoue ; un simple résultat `sent` ne suffit pas pour
@@ -310,6 +360,7 @@ physiques même lorsque les boutons redeviennent disponibles.
 
 | Observation | Vérification suivante |
 |---|---|
+| ON local confirmé, télécommande sans effet et aucun bip après « --- » puis ON/OFF | Échec d'association déjà constaté ; vérifier la procédure exacte, puis comparer les émetteurs et le chemin réception/décodage/apprentissage |
 | Situation initiale confirmée : télécommande reçue par l'ESP32 mais ignorée du poêle | Commandes locales, REMOTE, alarmes, association exacte ; le décodage ESP32 ne prouve pas une réception par le poêle |
 | ESP32 non connecté | Port USB, carte, exclusivité COM3, journal de démarrage |
 | `uncertain`, puis plus de statut prêt | Retour RX ou SPI en erreur ; redémarrer la carte et vérifier son état, sans rejouer automatiquement la commande |

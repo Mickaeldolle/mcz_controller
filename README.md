@@ -1,5 +1,9 @@
 # MCZ Musa Comfort Air — POC ESP32 + CC1101
 
+Pour reprendre le projet avec un agent de code : **[AGENTS.md](AGENTS.md)**
+([alias AGENT.md](AGENT.md)). Le guide mène à l'architecture, aux commandes de
+développement, à l'état des preuves et au modèle de passation.
+
 Application locale sur le PC : **Allumer / Éteindre** via ESP32 USB et CC1101,
 sans Wi-Fi ni cloud. La réception et les outils de diagnostic sont conservés.
 
@@ -20,6 +24,13 @@ Pour préparer le premier essai d'allumage et d'arrêt par notre émetteur :
 [guide de mise en service](docs/MISE_EN_SERVICE_ALLUMAGE_EXTINCTION.md).
 Ces documents proposent un profil manuel capturé ; ils ne modifient pas les
 profils actifs et ne constituent pas une preuve de réaction du poêle.
+
+Pour l'essai d'appairage supervisé, `Appairer-MCZ.cmd` utilise les captures
+manuelles de `config/manual_capture_profiles.json`, séparées des profils de
+l'application. Il vérifie COM3 puis attend `ENVOYER` avant une seule commande
+ON, sans nouvelle tentative automatique. La commande peut provoquer un
+allumage. Aucun changement de câblage ni firmware supplémentaire nécessaire
+avec la version RX/TX actuelle ; fermer tous les autres propriétaires de COM3.
 
 ## Utiliser l'application
 

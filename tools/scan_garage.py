@@ -8,7 +8,7 @@ import serial
 PROFILES = ((b"1", 868300000), (b"2", 868950000), (b"3", 869850000))
 
 
-def run(port_name: str, seconds: int) -> None:
+def run(port_name: str, seconds: int, raw: bool = False) -> None:
     folder = Path(__file__).resolve().parents[1] / "captures"
     path = folder / (datetime.now().strftime("%Y%m%d-%H%M%S") + "_garage868.log")
     with serial.Serial(port_name, 115200, timeout=0.1) as port, path.open("wb") as log:
@@ -34,21 +34,35 @@ def run(port_name: str, seconds: int) -> None:
             if expected not in reply:
                 raise RuntimeError(f"RX profile {hz} Hz not acknowledged; inspect log")
 
+        trigger_active = False
+        diagnostics_active = False
         try:
             startup = read_for(2)
             if b"RX READY" not in startup:
                 raise RuntimeError("RX startup not confirmed")
             port.write(b"d")
+            diagnostics_active = b"DIAG ON" in read_for(0.3)
+            if raw:
+                port.write(b"t")
+                trigger_active = b"TRIGGER ON" in read_for(0.5)
+                if not trigger_active:
+                    raise RuntimeError("Capture brute non confirmee par le firmware")
             for command, hz in PROFILES:
                 select(command, hz)
                 marker = f"TEST_WINDOW FREQ_HZ={hz} seconds={seconds}\n".encode()
                 log.write(marker)
                 print(marker.decode(), end="", flush=True)
-                read_for(seconds)
+                received = read_for(seconds)
+                if raw:
+                    print(f"Blocs bruts termines dans cette fenetre : {received.count(b'RX_BURST_END')}")
         finally:
             # Always attempt restoration, including Ctrl+C and failed calibration.
+            if trigger_active:
+                port.write(b"t")
+            if diagnostics_active:
+                port.write(b"d")
             select(b"0", 434500000)
-            port.write(b"ds")
+            port.write(b"s")
             read_for(0.5)
     print(f"\nLog: {path}")
 
@@ -57,10 +71,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", required=True)
     parser.add_argument("--seconds-per-band", type=int, default=15)
+    parser.add_argument("--raw", action="store_true", help="Save RSSI-triggered raw pulses to the log")
     args = parser.parse_args()
     if not 1 <= args.seconds_per_band <= 60:
         parser.error("--seconds-per-band must be between 1 and 60")
     try:
-        run(args.port, args.seconds_per_band)
+        run(args.port, args.seconds_per_band, args.raw)
     except (serial.SerialException, OSError, RuntimeError) as exc:
         parser.exit(1, f"Test failed: {exc}\n")
