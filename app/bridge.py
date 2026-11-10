@@ -1,33 +1,16 @@
 """Exclusive USB owner. Read/status traffic never transmits RF."""
-import binascii
 import json
-from pathlib import Path
 import threading
 import time
 import serial
 
-ROOT = Path(__file__).resolve().parents[1]
-
-
-def load_profiles(path=ROOT / "config/power_profiles.json"):
-    profiles = json.loads(path.read_text(encoding="utf-8"))
-    for action in ("on", "off"):
-        raw = bytes.fromhex(profiles[action])
-        if len(raw) != 7 or raw[:3].hex().upper() != "C8CC02":
-            raise ValueError("Identifiant ou longueur de trame invalide")
-        if binascii.crc_hqx(raw[:5], 0) != int.from_bytes(raw[5:], "big"):
-            raise ValueError("CRC invalide")
-        if (raw[3] & 3 == 0) != (action == "off"):
-            raise ValueError("Mode de commande incohérent")
-        # The firmware accepts exactly 14 hex characters, without separators.
-        profiles[action] = raw.hex().upper()
-    return profiles
+from .catalog import DEFAULT_ON, MCZ_FREQUENCY_HZ, load_command_presets
 
 
 class Bridge:
-    def __init__(self, port, profiles=None):
+    def __init__(self, port, presets=None):
         self.port_name = port
-        self.profiles = load_profiles() if profiles is None else profiles
+        self.presets = load_command_presets() if presets is None else dict(presets)
         self.lock = threading.Lock()
         self.wire_lock = threading.Lock()
         self.wake = threading.Event()
@@ -50,16 +33,27 @@ class Bridge:
             return {"connected": self.ready and time.monotonic() - self.seen < 5,
                     "busy": self.pending is not None,
                     "cooldown": max(0, 3 - (time.monotonic() - self.last_send)),
-                    "profiles_ready": bool(self.profiles), "last": self.last,
+                    "profiles_ready": DEFAULT_ON in self.presets and "off" in self.presets,
+                    "presets": sorted(self.presets), "last": self.last,
                     "port": self.port_name, "tx_count": self.tx_count}
 
-    def command(self, action, request_id):
+    def command(self, action, request_id, profile=None):
+        if action not in ("on", "off"):
+            return {"result": "rejected"}
+        if profile is None:
+            profile = "off" if action == "off" else DEFAULT_ON
         with self.lock:
             if request_id in self.results:
                 old = self.results[request_id]
-                if old["action"] != action:
+                if old["action"] != action or old.get("profile") != profile:
                     return {"result": "rejected"}
                 return dict(old)
+            if action == ("off" if profile == "off" else "on"):
+                frame = self.presets.get(profile)
+            else:
+                frame = None
+            if frame is None:
+                return {"result": "rejected"}
             if self.pending or time.monotonic() - self.last_send < 3:
                 return {"result": "busy"}
             if not self.ready or time.monotonic() - self.seen >= 5 or self.device is None:
@@ -67,15 +61,15 @@ class Bridge:
             self.pending = request_id
             self.wake.clear()
             self.last_send = time.monotonic()
-            entry = {"id": request_id, "action": action, "result": "uncertain"}
+            entry = {"id": request_id, "action": action, "profile": profile, "result": "uncertain"}
             # Reserve ID BEFORE writing: a timeout or USB failure must never retry it.
             self.results[request_id] = entry
             device = self.device
         try:
             with self.wire_lock:
-                device.write(f"!TX {request_id} {self.profiles[action]}\n".encode("ascii"))
+                device.write(f"!TX {request_id} {frame}\n".encode("ascii"))
             self.wake.wait(4)
-        except (serial.SerialException, OSError, KeyError):
+        except (serial.SerialException, OSError):
             pass
         finally:
             with self.lock:
@@ -84,7 +78,8 @@ class Bridge:
                 # Bound history; IDs are random, never reused by the UI.
                 if len(self.results) > 512:
                     del self.results[next(iter(self.results))]
-        return dict(entry)
+                result = dict(entry)
+        return result
 
     def _read(self):
         while not self.stop.is_set():
@@ -135,7 +130,7 @@ class Bridge:
             return
         with self.lock:
             if msg.get("type") == "status":
-                self.ready = msg.get("ready") is True and msg.get("frequency") == 434500000
+                self.ready = msg.get("ready") is True and msg.get("frequency") == MCZ_FREQUENCY_HZ
                 self.seen = time.monotonic()
                 self.tx_count = msg.get("tx_count")
             elif self.pending is not None and msg.get("type") == "result" and msg.get("id") == self.pending:

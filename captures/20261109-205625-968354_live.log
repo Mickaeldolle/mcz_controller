@@ -1,0 +1,151 @@
+2026-11-09T20:56:25.970+01:00  MCZ - ECOUTE SEULE sur COM3. Ctrl+C pour arreter.
+2026-11-09T20:56:25.970+01:00  Chaque RX est une trame ; un appui peut produire 5 repetitions.
+2026-11-09T20:56:25.970+01:00  Heure et delais mesures sur le PC apres decodage et transport USB, pas a l'antenne.
+2026-11-09T20:56:25.970+01:00  L'ouverture USB peut redemarrer l'ESP32. Aucun ordre Allumer/Eteindre n'est envoye.
+2026-11-09T20:56:25.972+01:00  Journal : C:\Users\dolle\development\mcz_musa\captures\20261109-205625-968354_live.log
+2026-11-09T20:56:26.736+01:00  RX READY 434.50MHz OOK RMT
+2026-11-09T20:56:28.053+01:00  USB : RX PRET | frequence=434500000 Hz | compteur TX=0
+2026-11-09T20:56:28.059+01:00  STATE=0D VALID=0 FREQ_HZ=434500000 CAPTURE=RMT BLOCKS=1 DROPPED=0
+2026-11-09T20:56:36.061+01:00  En ecoute... 0 trame(s) | statut USB recent
+2026-11-09T20:56:43.035+01:00  RX #0001    premiere  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:56:43.119+01:00  RX #0002      +83 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:56:43.200+01:00  RX #0003      +82 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:56:43.282+01:00  RX #0004      +82 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:56:43.365+01:00  RX #0005      +83 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:56:46.107+01:00  En ecoute... 5 trame(s) | statut USB recent
+2026-11-09T20:56:54.691+01:00  RX #0006   +11326 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T20:56:54.774+01:00  RX #0007      +83 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T20:56:54.856+01:00  RX #0008      +82 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T20:56:54.939+01:00  RX #0009      +82 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T20:56:55.022+01:00  RX #0010      +83 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T20:56:56.127+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:57:06.197+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:57:16.246+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:57:26.247+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:57:36.321+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:57:46.410+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:57:56.500+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:58:06.583+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:58:16.630+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:58:26.705+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:58:36.782+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:58:46.863+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:58:56.923+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:59:06.992+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:59:17.071+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:59:27.140+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:59:37.200+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:59:47.277+01:00  En ecoute... 10 trame(s) | statut USB recent
+2026-11-09T20:59:50.453+01:00  RX #0011  +175431 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:59:50.536+01:00  RX #0012      +82 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:59:50.618+01:00  RX #0013      +83 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:59:50.700+01:00  RX #0014      +82 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:59:50.782+01:00  RX #0015      +82 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T20:59:57.371+01:00  En ecoute... 15 trame(s) | statut USB recent
+2026-11-09T20:59:57.500+01:00  RX #0016    +6718 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T20:59:57.583+01:00  RX #0017      +82 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T20:59:57.664+01:00  RX #0018      +82 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T20:59:57.747+01:00  RX #0019      +83 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T20:59:57.829+01:00  RX #0020      +82 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T21:00:03.066+01:00  RX #0021    +5236 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:00:03.148+01:00  RX #0022      +82 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:00:03.230+01:00  RX #0023      +82 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:00:03.313+01:00  RX #0024      +83 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:00:03.395+01:00  RX #0025      +82 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:00:07.430+01:00  En ecoute... 25 trame(s) | statut USB recent
+2026-11-09T21:00:08.571+01:00  RX #0026    +5176 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:00:08.654+01:00  RX #0027      +83 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:00:08.736+01:00  RX #0028      +82 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:00:08.817+01:00  RX #0029      +82 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:00:08.901+01:00  RX #0030      +83 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:00:14.020+01:00  RX #0031    +5119 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:14.102+01:00  RX #0032      +82 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:14.184+01:00  RX #0033      +82 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:14.267+01:00  RX #0034      +83 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:14.349+01:00  RX #0035      +82 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:17.538+01:00  En ecoute... 35 trame(s) | statut USB recent
+2026-11-09T21:00:23.052+01:00  RX #0036    +8703 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:23.134+01:00  RX #0037      +82 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:23.216+01:00  RX #0038      +82 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:23.300+01:00  RX #0039      +83 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:23.381+01:00  RX #0040      +82 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:27.345+01:00  RX #0041    +3964 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:27.429+01:00  RX #0042      +83 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:27.510+01:00  RX #0043      +82 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:27.584+01:00  En ecoute... 43 trame(s) | statut USB recent
+2026-11-09T21:00:27.594+01:00  RX #0044      +83 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:27.675+01:00  RX #0045      +82 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:30.990+01:00  RX #0046    +3315 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:31.073+01:00  RX #0047      +82 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:31.156+01:00  RX #0048      +83 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:31.238+01:00  RX #0049      +82 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:31.321+01:00  RX #0050      +83 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:34.785+01:00  RX #0051    +3464 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:34.867+01:00  RX #0052      +83 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:34.950+01:00  RX #0053      +82 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:35.032+01:00  RX #0054      +83 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:35.114+01:00  RX #0055      +82 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:37.635+01:00  En ecoute... 55 trame(s) | statut USB recent
+2026-11-09T21:00:37.931+01:00  RX #0056    +2816 ms  C8 CC 02 D5 B8 6F 62  [autre trame] CRC=OK
+2026-11-09T21:00:38.013+01:00  RX #0057      +82 ms  C8 CC 02 D5 B8 6F 62  [autre trame] CRC=OK
+2026-11-09T21:00:38.095+01:00  RX #0058      +82 ms  C8 CC 02 D5 B8 6F 62  [autre trame] CRC=OK
+2026-11-09T21:00:38.178+01:00  RX #0059      +83 ms  C8 CC 02 D5 B8 6F 62  [autre trame] CRC=OK
+2026-11-09T21:00:38.260+01:00  RX #0060      +82 ms  C8 CC 02 D5 B8 6F 62  [autre trame] CRC=OK
+2026-11-09T21:00:42.325+01:00  RX #0061    +4064 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:42.406+01:00  RX #0062      +82 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:42.488+01:00  RX #0063      +83 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:42.571+01:00  RX #0064      +82 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:42.654+01:00  RX #0065      +83 ms  C8 CC 02 B5 B8 64 48  [autre trame] CRC=OK
+2026-11-09T21:00:46.218+01:00  RX #0066    +3564 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:46.300+01:00  RX #0067      +82 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:46.383+01:00  RX #0068      +83 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:46.465+01:00  RX #0069      +82 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:46.547+01:00  RX #0070      +82 ms  C8 CC 02 95 B8 62 AE  [autre trame] CRC=OK
+2026-11-09T21:00:47.636+01:00  En ecoute... 70 trame(s) | statut USB recent
+2026-11-09T21:00:49.713+01:00  RX #0071    +3165 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:49.795+01:00  RX #0072      +83 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:49.877+01:00  RX #0073      +82 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:49.959+01:00  RX #0074      +82 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:50.042+01:00  RX #0075      +83 ms  C8 CC 02 75 B8 72 1C  [autre trame] CRC=OK
+2026-11-09T21:00:53.506+01:00  RX #0076    +3464 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:53.589+01:00  RX #0077      +83 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:53.671+01:00  RX #0078      +82 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:53.753+01:00  RX #0079      +82 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:53.836+01:00  RX #0080      +83 ms  C8 CC 02 55 B8 74 FA  [autre trame] CRC=OK
+2026-11-09T21:00:57.672+01:00  En ecoute... 80 trame(s) | statut USB recent
+2026-11-09T21:00:57.699+01:00  RX #0081    +3863 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:57.782+01:00  RX #0082      +83 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:57.864+01:00  RX #0083      +82 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:57.947+01:00  RX #0084      +82 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:00:58.029+01:00  RX #0085      +83 ms  C8 CC 02 35 B8 7F D0  [autre trame] CRC=OK
+2026-11-09T21:01:07.787+01:00  En ecoute... 85 trame(s) | statut USB recent
+2026-11-09T21:01:09.397+01:00  RX #0086   +11368 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:01:09.479+01:00  RX #0087      +82 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:01:09.561+01:00  RX #0088      +83 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:01:09.644+01:00  RX #0089      +82 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:01:09.726+01:00  RX #0090      +82 ms  C8 CC 02 31 B8 B3 14  [autre trame] CRC=OK
+2026-11-09T21:01:13.391+01:00  RX #0091    +3665 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:01:13.473+01:00  RX #0092      +82 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:01:13.555+01:00  RX #0093      +82 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:01:13.637+01:00  RX #0094      +83 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:01:13.720+01:00  RX #0095      +82 ms  C8 CC 02 2D B8 F5 0A  [autre trame] CRC=OK
+2026-11-09T21:01:17.085+01:00  RX #0096    +3365 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T21:01:17.166+01:00  RX #0097      +82 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T21:01:17.250+01:00  RX #0098      +83 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T21:01:17.332+01:00  RX #0099      +82 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T21:01:17.414+01:00  RX #0100      +82 ms  C8 CC 02 29 B8 39 CE  [autre trame] CRC=OK
+2026-11-09T21:01:17.845+01:00  En ecoute... 100 trame(s) | statut USB recent
+2026-11-09T21:01:20.830+01:00  RX #0101    +3415 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T21:01:20.911+01:00  RX #0102      +82 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T21:01:20.993+01:00  RX #0103      +82 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T21:01:21.077+01:00  RX #0104      +83 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T21:01:21.158+01:00  RX #0105      +82 ms  C8 CC 02 25 B8 7C A3  [autre trame] CRC=OK
+2026-11-09T21:01:25.273+01:00  RX #0106    +4114 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T21:01:25.355+01:00  RX #0107      +83 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T21:01:25.438+01:00  RX #0108      +82 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T21:01:25.520+01:00  RX #0109      +82 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T21:01:25.603+01:00  RX #0110      +83 ms  C8 CC 02 24 B8 4F 92  [autre trame] CRC=OK
+2026-11-09T21:01:27.914+01:00  En ecoute... 110 trame(s) | statut USB recent
+2026-11-09T21:01:37.919+01:00  En ecoute... 110 trame(s) | statut USB recent
+2026-11-09T21:01:48.012+01:00  En ecoute... 110 trame(s) | statut USB recent
+2026-11-09T21:01:50.215+01:00  Ecoute terminee. 110 trame(s) valide(s). Port USB libere.

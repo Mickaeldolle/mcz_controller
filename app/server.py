@@ -1,5 +1,6 @@
 """Serve the PC-only control page: python -m app.server --serial-port COM3."""
 import argparse
+import csv
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
@@ -59,13 +60,21 @@ def make_handler(bridge, token, port):
                     raise ValueError()
                 self.connection.settimeout(3)
                 data = json.loads(self.rfile.read(length))
-                if not isinstance(data, dict) or set(data) != {"action", "id"}:
+                if not isinstance(data, dict) or set(data) not in ({"action", "id"}, {"action", "id", "profile"}):
                     raise ValueError()
                 if data["action"] not in ("on", "off") or not isinstance(data["id"], str) or not re.fullmatch("[0-9a-f]{32}", data["id"]):
                     raise ValueError()
-            except (ValueError, TypeError, OSError):
+                profile = data.get("profile")
+                if "profile" in data and (not isinstance(profile, str)
+                                          or not re.fullmatch(r"off|[1-5]:[1-6](?::[0-6])?", profile)
+                                          or (profile == "off") != (data["action"] == "off")):
+                    raise ValueError()
+            except (ValueError, TypeError, OSError, RecursionError):
                 return self.send(400, {"error": "Commande invalide"})
-            result = bridge.command(data["action"], data["id"])
+            result = (
+                bridge.command(data["action"], data["id"], profile=profile)
+                if profile is not None else bridge.command(data["action"], data["id"])
+            )
             return self.send(200, result)
 
     return Handler
@@ -78,7 +87,10 @@ def main(open_browser=False):
     args = parser.parse_args()
     if not 1024 <= args.http_port <= 65535:
         parser.error("Port HTTP invalide")
-    bridge = Bridge(args.serial_port)
+    try:
+        bridge = Bridge(args.serial_port)
+    except (OSError, ValueError, csv.Error) as exc:
+        parser.exit(2, f"Catalogue indisponible : {exc}\n")
     server = ThreadingHTTPServer(("127.0.0.1", args.http_port), make_handler(bridge, secrets.token_hex(32), args.http_port))
     bridge.start()
     print(f"MCZ : http://127.0.0.1:{args.http_port} — USB {args.serial_port}", flush=True)

@@ -10,7 +10,8 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from app.bridge import Bridge, load_profiles
+from app.bridge import Bridge
+from app.catalog import CATALOG, ROOT, load_command_presets, load_presets, validate_frame
 from app.server import make_handler
 
 
@@ -27,17 +28,6 @@ class Device:
 
 
 class BridgeTests(unittest.TestCase):
-    def test_profiles_are_normalized_for_firmware(self):
-        profiles = load_profiles()
-        for action in ("on", "off"):
-            profiles[action] = bytes.fromhex(profiles[action]).hex(" ").lower()
-        with tempfile.TemporaryDirectory() as folder:
-            path = Path(folder) / "profiles.json"
-            path.write_text(json.dumps(profiles), encoding="utf-8")
-            loaded = load_profiles(path)
-        self.assertEqual(loaded["on"], "C8CC028FB88E16")
-        self.assertEqual(loaded["off"], "C8CC028CB8DB45")
-
     def test_malformed_usb_messages_do_not_stop_reader(self):
         b = Bridge("FAKE")
         for payload in (b"[]", b"null", b"true", b"42", b'"text"', b"{", b"\xff",
@@ -96,11 +86,35 @@ class BridgeTests(unittest.TestCase):
         serial.assert_called_once()
 
     def test_profiles_and_real_capture(self):
-        p = load_profiles()
-        log = (Path(__file__).resolve().parents[1] / p["source"]).read_text()
-        for action in ("on", "off"):
-            raw = " ".join(p[action][i:i+2] for i in range(0, 14, 2))
-            self.assertEqual(log.count("Raw: " + raw), 5)
+        presets = load_presets()
+        self.assertEqual(set(presets), {
+            "off", *(f"{n}:1" for n in range(1, 6)), *(f"5:{n}" for n in range(2, 7)),
+            *(f"3:5:{n}" for n in range(7)),
+        })
+        self.assertEqual(presets["1:1"], "C8CC0225B87CA3")
+        self.assertEqual(presets["off"], "C8CC0224B84F92")
+        self.assertEqual(presets["5:6"], "C8CC02D5B86F62")
+        self.assertEqual(presets["3:5:0"], "C8CC02AD8059C9")
+        self.assertEqual(presets["3:5:1"], "C8CC02AD88D8C1")
+        self.assertEqual(presets["3:5:6"], "C8CC02ADB06F9A")
+
+    def test_derived_profiles_preserve_captures_and_cover_manual_ranges(self):
+        captures = load_presets()
+        presets = load_command_presets()
+        self.assertEqual(len(presets), 221)
+        self.assertEqual(len(set(presets.values())), len(presets))
+        for profile, frame in captures.items():
+            self.assertEqual(presets[profile], frame)
+
+        for power in range(1, 6):
+            for fan1 in range(1, 7):
+                for fan2 in range(7):
+                    raw = validate_frame(presets[f"{power}:{fan1}:{fan2}"])
+                    self.assertEqual((raw[3] & 3, (raw[3] >> 2) & 7, raw[3] >> 5), (1, power, fan1))
+                    self.assertEqual(((raw[4] >> 3) & 7, raw[4] & 0xC7), (fan2, 0x80))
+
+        with patch("app.catalog.load_presets", return_value={"off": captures["off"], "1:1": captures["1:1"]}):
+            self.assertEqual(set(load_command_presets()), {"off", "1:1"})
 
     def test_construct_and_offline_never_write(self):
         with patch("app.bridge.serial.Serial") as serial:
@@ -119,7 +133,7 @@ class BridgeTests(unittest.TestCase):
         self.assertEqual(b.command("on", "a"*32)["result"], "rejected")
         self.assertEqual(b.command("on", "b"*32)["result"], "busy")
         self.assertEqual(len(b.device.writes), 1)
-        self.assertIn(b"C8CC028CB8DB45", b.device.writes[0])
+        self.assertIn(b"C8CC0224B84F92", b.device.writes[0])
 
     def test_failure_not_retried(self):
         b = Bridge("FAKE")
@@ -130,6 +144,27 @@ class BridgeTests(unittest.TestCase):
         self.assertEqual(b.command("on", "a"*32)["result"], "uncertain")
         b.device.write = lambda data: self.fail("Must not retry")
         self.assertEqual(b.command("on", "a"*32)["result"], "uncertain")
+
+    def test_captured_settings_use_only_the_selected_frame(self):
+        b = Bridge("FAKE", presets={"1:1": "C8CC0225B87CA3", "3:5:0": "C8CC02AD8059C9", "off": "C8CC0224B84F92"})
+        b.device = Device(b)
+        b.ready = True
+        b.seen = time.monotonic()
+        self.assertEqual(b.command("on", "a"*32, "1:6")["result"], "rejected")
+        self.assertEqual(b.command("off", "a"*32, "1:1")["result"], "rejected")
+        self.assertEqual(b.command("on", "a"*32, "1:1:0")["result"], "rejected")
+        self.assertEqual(b.command("on", "a"*32, "3:5:0")["result"], "sent")
+        self.assertEqual(b.command("on", "a"*32, "3:5:0")["result"], "sent")
+        self.assertEqual(b.command("on", "a"*32, "1:1")["result"], "rejected")
+        self.assertEqual(b.device.writes, [b"!TX " + b"a"*32 + b" C8CC02AD8059C9\n"])
+
+    def test_catalog_rejects_valid_frame_in_wrong_capture_group(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "catalogue.csv"
+            data = CATALOG.read_text(encoding="utf-8-sig")
+            path.write_text(data.replace("C8CC0225B87CA3", "C8CC0229B839CE", 1), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "groupe RX"):
+                load_presets(path, root=ROOT)
 
     def test_timeout_and_late_reply_never_retry(self):
         b = Bridge("FAKE")
@@ -185,8 +220,8 @@ class FakeBridge:
     def status(self):
         return {"connected": True, "busy": False, "cooldown": 0, "profiles_ready": True, "last": None, "port": "FAKE"}
 
-    def command(self, action, request_id):
-        self.commands.append((action, request_id))
+    def command(self, action, request_id, profile=None):
+        self.commands.append((action, request_id) if profile is None else (action, request_id, profile))
         return {"result": "sent"}
 
 
@@ -222,6 +257,14 @@ class HttpTests(unittest.TestCase):
     def test_valid_command(self):
         self.assertEqual(self.request("POST", "/api/command", {"action": "off", "id": "a"*32})[0], 200)
         self.assertEqual(self.bridge.commands, [("off", "a"*32)])
+
+    def test_captured_profile_contract(self):
+        valid = {"action": "on", "id": "a"*32}
+        for profile in ("1:7", "0:1", "3:5:7", "3:5:0:1", "off", None, "C8CC0225B87CA3"):
+            self.assertEqual(self.request("POST", "/api/command", {**valid, "profile": profile})[0], 400)
+        self.assertEqual(self.request("POST", "/api/command", {**valid, "profile": "5:6"})[0], 200)
+        self.assertEqual(self.request("POST", "/api/command", {**valid, "id": "b"*32, "profile": "3:5:0"})[0], 200)
+        self.assertEqual(self.bridge.commands, [("on", "a"*32, "5:6"), ("on", "b"*32, "3:5:0")])
 
     def test_reject_foreign_origin_host_and_bad_input(self):
         valid = {"action": "on", "id": "a"*32}

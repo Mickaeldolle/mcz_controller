@@ -1,9 +1,0 @@
-2026-11-02T21:32:19.748+01:00  MCZ - ECOUTE SEULE sur COM3. Ctrl+C pour arreter.
-2026-11-02T21:32:19.748+01:00  Chaque RX est une trame ; un appui peut produire 5 repetitions.
-2026-11-02T21:32:19.748+01:00  Heure et delais mesures sur le PC apres decodage et transport USB, pas a l'antenne.
-2026-11-02T21:32:19.749+01:00  L'ouverture USB peut redemarrer l'ESP32. Aucun ordre Allumer/Eteindre n'est envoye.
-2026-11-02T21:32:19.749+01:00  Journal : C:\Users\dolle\development\mcz_musa\captures\20261102-213219-748134_live.log
-2026-11-02T21:32:20.452+01:00  RX READY 434.50MHz OOK RMT
-2026-11-02T21:32:21.773+01:00  USB : RX PRET | frequence=434500000 Hz | compteur TX=0
-2026-11-02T21:32:21.778+01:00  STATE=0D VALID=0 FREQ_HZ=434500000 CAPTURE=RMT BLOCKS=21 DROPPED=0
-2026-11-02T21:32:23.750+01:00  Ecoute terminee. 0 trame(s) valide(s). Port USB libere.

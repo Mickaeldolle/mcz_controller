@@ -1,87 +1,64 @@
-# État du projet pour une reprise
+# État du projet
 
-Relevé documentaire du **6 novembre 2026** à partir des fichiers locaux.
-Aucun contrôle du matériel actuellement branché n'est impliqué par ce relevé.
-Retour au [guide des agents](../../AGENTS.md).
+Le 9 novembre 2026, le propriétaire a confirmé l’allumage et l’extinction
+du poêle avec les boutons de la page locale. Le compteur TX est passé
+de 0 à 2, avec OFF `sent` en dernier résultat.
+[Compte rendu](../APPLICATION_LOCALE.md#essai-sur-le-poêle--9-novembre-2026)
 
-## Ce qui est établi et ce qui reste à qualifier
+La [capture d’origine](../../captures/20261109-205625-968354_live.log)
+et la [capture du ventilateur 2](../../captures/20261110-065656-157595_live.log)
+sont les références du [catalogue](../../config/catalogue_mcz.csv).
+La deuxième capture ajoute sept réglages du ventilateur 2, de l’arrêt
+(0) à Auto (6), avec flamme 3 et ventilateur 1 au niveau 5. Leur rejeu
+par l’ESP32 reste à vérifier sur le poêle.
 
-| Sujet | Preuve locale | Limite |
-|---|---|---|
-| Télécommande d'origine reçue par ESP32 | Captures réelles et rapports RX, ID `C8CC02`, CRC valides | Ne prouve pas sa réception par le poêle |
-| Application et firmware RX/TX | Sources, tests et essais USB consignés | Version installée actuellement non inspectée pour cette documentation |
-| Essai du 2 novembre | Rapport : `sent`, TX 0→1, retour RX ; utilisateur : `---` maintenu sans bip | Appairage non confirmé ; aucune mesure RF indépendante |
-| Journaux des 3 et 4 novembre | D'autres `sent` et retours RX sont présents, ainsi que des abandons et une annulation | Aucune observation physique nouvelle ne peut être déduite de ces lignes |
-| Commande locale du poêle | Utilisateur : démarrage avec sélecteur ON | Ne valide pas la chaîne distante en REMOTE |
-| Réaction distante / association | Échec documenté avec télécommande d'origine et essai ESP32 | Cause non isolée ; ne pas diagnostiquer un récepteur défectueux par défaut |
+Le firmware conserve le contrat USB et sert une page autonome sur le même
+port que l’[API Wi-Fi v1](../API.md). Cette API est aussi le contrat
+prévu pour la future application Kotlin.
 
-Références principales : [rapport RX](../RAPPORT_RX_VALIDE.md),
-[blocages](../BLOCAGES_ALLUMAGE_EXTINCTION.md),
-[essai décrit du 2 novembre](../ESSAI_TX_20261102_APPARIAGE.md).
-Les [validations historiques](../VALIDATION.md) contiennent aussi des étapes
-antérieures au TX ; ne pas interpréter leurs anciens statuts comme l'état actuel.
+Vérification du refactor le 9 novembre 2026 : compilation PlatformIO
+réussie (48 960 octets de RAM statique et 795 089 octets de flash), 15 tests
+Python et quatre suites C++ avec sanitizers réussis. Le serveur PC relancé
+voit la carte sur COM3, avec onze profils et un compteur TX à zéro.
 
-Journaux plus récents consultés :
+Le 10 novembre 2026, le firmware d’émission avec la page embarquée a
+été téléversé sur COM3 après sauvegarde locale de la zone réécrite.
+Le statut USB au démarrage indiquait `ready: true`,
+`frequency: 434500000` et `tx_count: 0`. Après la configuration Wi-Fi,
+la page et ses fichiers ont été servis par la carte. Le GET authentifié
+a confirmé les 18 profils et un compteur TX à zéro. Les essais HTTP
+ont confirmé le refus d’une clé absente ou incorrecte et d’un hôte ou
+d’une origine étrangers.
 
-- [3 novembre, envoi](../../captures/20261103-111115-521516_pairing.log).
-- [4 novembre, annulation](../../captures/20261104-184648-062038_pairing.log).
-- [4 novembre, envoi](../../captures/20261104-184745-024287_pairing.log).
+La variante de test sans formulaire a ensuite été téléversée sur COM3.
+Dans Chrome, la page s’est connectée au chargement et après
+rechargement. Le GET authentifié a confirmé les 18 profils et un
+compteur TX à zéro. Le HTML fournit la clé aux appareils qui peuvent
+ouvrir la page sur le réseau local.
 
-Un journal USB ne contient pas nécessairement les bips ou la réaction observée
-par la personne. Ne pas généraliser le résultat terrain du 2 novembre aux autres
-dates. Plusieurs fichiers de ces essais ne sont pas encore suivis par Git au
-moment du relevé ; vérifier leur présence avant une reprise depuis un clone.
+Une incompatibilité des commandes HTTP a été reproduite dans Firefox.
+Avec `Referrer-Policy: no-referrer`, le POST du navigateur recevait
+`403 invalid_origin`.
+La carte a été mise à jour avec `Referrer-Policy: same-origin`. Une
+requête Firefox portant un profil inexistant atteint maintenant la
+validation du catalogue et reçoit `422`. Les origines étrangères
+restent refusées et le compteur TX est resté à zéro pendant ces essais.
+Après rechargement de la page sur le téléphone, le propriétaire a
+confirmé une commande envoyée et une réaction du poêle. Le compteur
+TX est passé de zéro à un.
 
-## Profils en place
+Le générateur de profils manuels a ensuite été ajouté. Il reconstruit
+les trames manuelles capturées, puis calcule les 210 combinaisons avec
+un réglage explicite du ventilateur 2. La table comporte 221 profils
+au total. La compilation, les 16 tests Python, les suites natives et
+un essai de sélection dans Chrome avec API simulée ont réussi.
+Cette version a été téléversée sur COM3. Après redémarrage, l’API Wi-Fi
+a renvoyé les 221 profils et Chrome a confirmé la sélection des profils
+`1:1:2` et `2:4:3`. Le compteur TX est resté à zéro. L’essai sur le
+poêle d’une combinaison calculée reste à effectuer.
 
-| Usage | Source de configuration | ON | OFF |
-|---|---|---|---|
-| Application par défaut | `config/power_profiles.json` | `C8CC028FB88E16` | `C8CC028CB8DB45` |
-| Essai manuel distinct | `config/manual_capture_profiles.json` | `C8CC0245B87789` | `C8CC0244B844B8` |
-
-Provenance active : [capture du 30 octobre](../../captures/20261030-124843_buttons.log).
-Provenance manuelle : [capture du 2 novembre](../../captures/20261102-215528-553832_live.log).
-Les réglages ON diffèrent : mode 3 / puissance 3 / ventilation 1 à 4 pour
-l'application ; mode 1 / puissance 1 / ventilation 1 à 2 pour l'essai manuel.
-Le champ ventilation 2 à 7 reste inexpliqué ; préserver la trame capturée.
-Le fichier manuel ne remplace pas automatiquement les profils du serveur.
-
-## Prochaine étape utile
-
-La priorité technique documentée est de qualifier notre émission avec un
-récepteur indépendant ou SDR capable de recevoir aussi la télécommande.
-Comparer fréquence, octets, polarité, répétitions et durées. Un analyseur
-logique sur GPIO27 peut qualifier la sortie numérique, mais pas l'onde RF.
-Recouper aussi la procédure d'apprentissage de la génération exacte du poêle.
-
-Si aucune mesure indépendante n'est disponible, poursuivre l'analyse hors
-ligne et documenter la limite. Ne pas inventer une trame d'appairage ni migrer
-vers ESPHome/Home Assistant pour masquer ce manque de preuve.
-
-## Actualiser cet état
-
-Ajouter la date, le contexte, le journal et l'observation physique explicite.
-Séparer résultat logiciel, résultat USB, mesure RF et résultat poêle. Un nouveau
-`sent` seul ne lève pas le blocage d'appairage. Ne pas écraser les rapports
-historiques ni déclarer tous les tests réussis à partir d'un bilan ancien.
-
-## Vérifications de cette documentation — 6 novembre 2026
-
-- Huit documents créés ou actualisés : lecture UTF-8, blocs de code et 43 liens
-  locaux vérifiés ; `git diff --check` sans erreur d'espacement.
-- Suite Python : 31 tests recensés, 29 réussis, 1 ignoré faute de `MCZ_DECODER`,
-  1 en erreur (`test_reject_foreign_origin_host_and_bad_input`) avec
-  `ConnectionAbortedError: WinError 10053`. La relance ciblée des 13 tests
-  d'application confirme 12 réussites et la même erreur HTTP. Cause non isolée.
-  La première exécution en environnement restreint avait aussi rencontré
-  `WinError 10013` sur les trois tests HTTP ; une exécution autorisée pour les
-  connexions locales a levé ces refus, mais pas l'interruption 10053.
-- `python -m platformio run` via le Python du projet : succès, RAM 26520 octets,
-  flash 300041 octets. Une première exécution restreinte avait échoué à
-  `checkprogsize` avec une erreur de repositionnement de DLL Windows ; la
-  relance autorisée à exécuter les outils locaux a réussi, sans changement du code.
-- Suites C++ natives non relancées pour cette tâche documentaire. Aucun port
-  série ouvert, aucune carte flashée et aucune émission RF effectuée.
-
-La suite Python complète n'est donc pas verte dans cette session. Ne pas
-affaiblir les contrôles Host/Origin pour contourner l'interruption HTTP.
+La compilation, les 15 tests Python de commande, les six tests du
+moniteur de réception et les quatre suites C++ ont réussi. La page
+Wi-Fi a été testée dans Chrome à 360 px de large avec une API simulée.
+Le [guide de développement](../GUIDE_DEVELOPPEMENT.md#6-vérifier-lapi-wi-fi)
+décrit la procédure de vérification sur le Wi-Fi réel.

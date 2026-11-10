@@ -27,14 +27,14 @@ components:
 ### Creative North Star
 Un interrupteur domestique lisible posé sur une surface de papier chaud.
 ### Product context and register
-Usage sur PC à domicile, lumière ambiante variable. Interface de produit en français, deux actions sans navigation. Aucun marché commercial supposé. La terre cuite distingue Allumer ; le texte reste prioritaire.
+Usage sur téléphone ou PC à domicile, lumière ambiante variable. Interface de produit en français, deux actions sans navigation. Aucun marché commercial supposé. La terre cuite distingue Allumer et le texte reste prioritaire.
 Tokens : app/web/style.css est la source d'exécution ; les valeurs ci-dessus la reflètent. Modifier les deux ensemble. API propriétaire des commandes, firmware propriétaire de la validation radio ; aucun état réel du poêle déduit d'un clic.
 ## Colors
-Fond background, texte ink, texte secondaire muted. Ember pour Allumer, surface pour Éteindre, focus bleu. Success indique seulement la connexion USB. Pas de thème sombre.
+Fond background, texte ink, texte secondaire muted. Ember pour Allumer, surface pour Éteindre, focus bleu. Success indique la connexion à l’ESP32. Pas de thème sombre.
 ## Typography
 Segoe UI locale, repli système. Corps 15px, titre 36–48px, actions 22px. Aucun téléchargement de police.
 ## Layout
-Colonne de 640px maximum. Deux boutons en grille, marge réduite sous 420px. Retour d'envoi sous les actions avec espace réservé.
+Colonne de 640px maximum. Les curseurs précèdent les deux boutons. Sous 420px, les curseurs s’empilent et les boutons restent côte à côte. Le retour d’envoi garde son espace sous les actions.
 ## Elevation & Depth
 Séparation par traits ; aucune ombre ou superposition.
 ## Shapes
@@ -47,7 +47,8 @@ Boutons natifs, clic ou Entrée/Espace. Focus visible, survol, pression et indis
 ### Navigation and data display
 Une seule page, sans menu ni tableau.
 ### Forms and overlays
-Aucun formulaire ni dialogue ; erreurs dans la page.
+Trois curseurs natifs à pas entier, chacun avec un libellé et la valeur choisie. Le curseur du ventilateur 2 apparaît quand le catalogue contient ses réglages. Son premier cran conserve le profil d’origine, suivi de l’arrêt (0), des niveaux 1 à 5 et d’Auto (6). Le texte sous les contrôles indique les combinaisons disponibles. Allumer / appliquer envoie le réglage choisi. Éteindre reste indépendant des réglages.
+La page de test Wi-Fi ouvre directement la commande. Le même composant de retour décrit l’envoi dans les deux modes.
 ### Iconography
 Deux SVG géométriques, traits de 2 unités ; libellés toujours visibles.
 ### Motion
@@ -56,6 +57,6 @@ Changement de couleur 120ms ; désactivé avec reduced-motion.
 Français direct. « Envoyée » signifie émission, pas réception. Aucun graphique.
 ## Do's and Don'ts
 - Garder les deux actions immédiatement accessibles.
-- Toujours distinguer connexion USB et état du poêle.
-- Ne pas ajouter de réglages de température ou de ventilation.
+- Toujours distinguer connexion à l’ESP32 et état du poêle.
+- Indiquer les combinaisons de flamme et de ventilation disponibles dans la table de commandes.
 - Ne jamais afficher « poêle allumé » sans mesure indépendante.

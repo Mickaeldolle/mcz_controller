@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-transport="usb">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,22 +9,47 @@
 </head>
 <body>
   <main>
-    <header><span class="connection" id="connection">Connexion à l’ESP32…</span><span class="local">USB · LOCAL</span></header>
+    <header><span class="connection" id="connection">Connexion à l’ESP32…</span><span class="local" id="transport">USB · LOCAL</span></header>
     <section aria-labelledby="title">
       <h1 id="title">Mon poêle</h1>
       <p class="model">MCZ Musa</p>
       <p class="state">État du poêle non confirmé</p>
+      <fieldset class="settings" id="settings" aria-describedby="settings-note" disabled>
+        <legend>Réglages à envoyer</legend>
+        <div class="ranges">
+          <div class="range">
+            <label for="power">Puissance flamme</label>
+            <span class="level" id="power-value" aria-hidden="true">1</span>
+            <input type="range" id="power" min="1" max="5" step="1" value="1">
+            <div class="limits" aria-hidden="true"><span>1</span><span>5</span></div>
+          </div>
+          <div class="range">
+            <label for="fan">Ventilateur 1</label>
+            <span class="level" id="fan-value" aria-hidden="true">1</span>
+            <input type="range" id="fan" min="1" max="6" step="1" value="1">
+            <div class="limits" aria-hidden="true"><span>1</span><span>6 · Auto</span></div>
+          </div>
+        </div>
+        <div class="range fan2-control" id="fan2-control" hidden>
+          <label for="fan2">Ventilateur 2</label>
+          <span class="level" id="fan2-value" aria-hidden="true">Profil d’origine</span>
+          <input type="range" id="fan2" min="-1" max="6" step="1" value="-1"
+            aria-valuetext="Profil d’origine" aria-describedby="settings-note">
+          <div class="limits" aria-hidden="true"><span>Profil d’origine</span><span>6 · Auto</span></div>
+        </div>
+      </fieldset>
+      <p class="settings-note" id="settings-note" aria-live="polite">Chargement des réglages capturés…</p>
       <div class="actions" aria-label="Commandes du poêle">
         <button id="on" class="on" disabled>
           <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4v12M9 8a11 11 0 1 0 14 0"/></svg>
-          <span>Allumer</span>
+          <span id="on-label">Allumer</span>
         </button>
         <button id="off" class="off" disabled>
           <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="8" width="16" height="16" rx="2"/></svg>
           <span>Éteindre</span>
         </button>
       </div>
-      <div class="feedback" role="status" aria-live="polite" aria-atomic="true"><p id="feedback">Vérification de la connexion USB…</p></div>
+      <div class="feedback" role="status" aria-live="polite" aria-atomic="true"><p id="feedback">Vérification de la connexion à l’ESP32…</p></div>
     </section>
     <footer>Un envoi radio ne confirme pas la réception par le poêle.</footer>
   </main>

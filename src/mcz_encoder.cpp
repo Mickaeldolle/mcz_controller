@@ -1,10 +1,13 @@
 #include "mcz_encoder.h"
-#include "mcz_decoder.h"
+#include "mcz_crc.h"
+#include "mcz_profiles.h"
 
 bool encodeMCZCommand(const uint8_t raw[7], std::vector<int32_t>& p) {
     p.clear();
-    MCZFrame f;
-    if (!parseMCZBytes(raw, 7, f) || f.remoteId != 0xC8CC02) return false;
+    if (!raw) return false;
+    const uint32_t remoteId = (uint32_t(raw[0]) << 16) | (uint32_t(raw[1]) << 8) | raw[2];
+    const uint16_t expectedCrc = (uint16_t(raw[5]) << 8) | raw[6];
+    if (remoteId != MCZ_REMOTE_ID || crc16Xmodem(raw, 5) != expectedCrc) return false;
     auto add = [&](int32_t d) {
         if (!p.empty() && ((p.back() > 0) == (d > 0))) p.back() += d;
         else p.push_back(d);

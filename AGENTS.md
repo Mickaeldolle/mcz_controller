@@ -6,15 +6,15 @@ Les instructions explicites de l'utilisateur priment sur ce guide.
 
 ## Comprendre le projet
 
-POC de commande locale d'un poêle MCZ Musa Comfort Air : page web sur un PC
-Windows, serveur Python, liaison USB vers un ESP32 classique, radio CC1101
-E07-M1101D à 434,50 MHz. Deux actions : Allumer et Éteindre. Pas de Wi-Fi,
-de cloud, de base de données ou de gestionnaire JavaScript nécessaire.
+Commande d'un poêle MCZ Musa Comfort Air : page web locale sur le PC via USB
+ou API HTTP hébergée par l'ESP32 sur le Wi-Fi local. Les deux entrées partagent
+la radio CC1101 E07-M1101D à 434,50 MHz et les mêmes profils capturés.
 
 La réception des trames d'origine et le chemin logiciel TX sont documentés.
-La réception par le poêle, l'association et l'action physique ne sont pas
-qualifiées de bout en bout. Ne pas annoncer un contrôle du poêle opérationnel
-sur la seule base de la compilation, d'un test ou d'un résultat USB `sent`.
+Le propriétaire a confirmé l'allumage et l'extinction depuis la page locale
+le 9 novembre 2026. Cette preuve couvre les deux commandes essayées.
+Pour les autres réglages et l'association, distinguer les vérifications
+logicielles et les résultats USB `sent` des observations sur le poêle.
 
 ## Parcours de lecture
 
@@ -22,13 +22,8 @@ sur la seule base de la compilation, d'un test ou d'un résultat USB `sent`.
 2. [Architecture](docs/agents/ARCHITECTURE.md) : composants et contrats.
 3. [Développement et validation](docs/agents/DEVELOPPEMENT.md) : commandes et risques.
 4. [README](README.md) : installation, matériel et utilisation.
-5. [Produit](PRODUCT.md) et [design](DESIGN.md) avant toute évolution de l'interface.
-
-Selon le travail, compléter avec le [format des trames](docs/FONCTIONNEMENT_TRAMES_MCZ.md),
-les [blocages](docs/BLOCAGES_ALLUMAGE_EXTINCTION.md), le
-[dernier essai terrain formellement décrit](docs/ESSAI_TX_20261102_APPARIAGE.md)
-et le [guide de mise en service](docs/MISE_EN_SERVICE_ALLUMAGE_EXTINCTION.md).
-Les rapports sont datés : les confronter au code, aux profils et aux journaux présents.
+5. [API Wi-Fi](docs/API.md) et [format des trames](docs/FONCTIONNEMENT_TRAMES_MCZ.md).
+6. [Produit](PRODUCT.md) et [design](DESIGN.md) avant toute évolution de l'interface.
 
 ## Avant de modifier
 
@@ -53,11 +48,15 @@ Les rapports sont datés : les confronter au code, aux profils et aux journaux p
   ce n'est pas une garantie d'exécution unique après redémarrage.
 - Garder le serveur sur `127.0.0.1`, les contrôles Host/Origin et le jeton de
   requête. Ne pas ouvrir le service sur le réseau pour contourner un test.
+- L'API Wi-Fi embarquée reste désactivée sans configuration USB. Exiger le
+  jeton Bearer et le même sous-réseau, préserver le moteur de commande commun.
 - Le CRC vérifie l'intégrité du format ; il n'authentifie pas l'émetteur.
 - Le TX reste limité à l'identifiant capturé `C8CC02`. Ne pas inventer de
   trames, de réglages ou de commande spéciale d'appairage.
-- Ne pas remplacer les profils actifs par les profils manuels comme effet
-  secondaire. Tout changement doit conserver la provenance et adapter ses tests.
+- Le catalogue et ses journaux fixent les trames capturées. Les combinaisons
+  manuelles dérivées suivent les champs documentés et la génération vérifie
+  qu’elle reconstruit les trames manuelles capturées. Tout changement doit
+  conserver la provenance et adapter ses tests.
 - L'interface distingue connexion USB, commande envoyée et état réel inconnu
   du poêle. Garder deux actions simples, accessibles, en français.
 
@@ -73,7 +72,7 @@ Les rapports sont datés : les confronter au code, aux profils et aux journaux p
   sans comprendre son activité.
 - Un flash remplace le firmware. Une émission ON peut réellement allumer le
   poêle. Ne réaliser ces opérations que dans le périmètre demandé, avec un
-  opérateur pour les essais physiques ; lire le guide de mise en service.
+  opérateur pour les essais physiques. Lire le guide de l'API.
 - Ne pas augmenter la puissance RF ou répéter les essais au hasard. Comparer
   notre TX avec la télécommande à l'aide d'un récepteur indépendant avant
   d'attribuer l'échec à la radio ou au récepteur du poêle.
@@ -90,5 +89,4 @@ Les rapports sont datés : les confronter au code, aux profils et aux journaux p
 - Conserver les captures originales ; aucune fixture synthétique dans `captures/`.
   Ne pas publier captures et identifiants locaux sans instruction explicite.
 - Mettre à jour les documents affectés si un contrat ou un résultat change.
-  Utiliser le [modèle de passation](docs/agents/PASSATION.md) si la tâche continue.
 - Ne pas committer, pousser ou publier automatiquement pour une demande de fichiers.

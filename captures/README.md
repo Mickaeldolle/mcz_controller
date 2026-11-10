@@ -1,22 +1,13 @@
-# Captures réelles
+# Capture de référence
 
-Ce dossier contient les journaux réels de réception, de surveillance et d'essais
-USB/RF du projet. Ne pas déposer de fixtures synthétiques ici : les conserver
-dans les tests et les identifier explicitement comme telles.
+- [Capture du 9 novembre](20261109-205625-968354_live.log) · 22 groupes de
+  cinq trames pour les commandes d’origine.
+- [Capture du 10 novembre](20261110-065656-157595_live.log) · 11 groupes de
+  cinq trames pour le ventilateur 2 à flamme 3 et ventilateur 1 au niveau 5.
 
-Repères de provenance :
+Le serveur local et la compilation vérifient chaque ligne du catalogue
+contre les cinq numéros RX correspondants dans le journal d’origine.
+L’ordre des gestes indiqué par l’opérateur figure dans le
+[catalogue](../config/catalogue_mcz.csv).
 
-- `20261030-124843_buttons.log` : source des profils ON/OFF actifs.
-- `20261102-215528-553832_live.log` : source des profils manuels distincts.
-- `*_pairing.log` : préparation et résultat USB des essais supervisés. Un résultat
-  `sent` ne prouve ni l'onde RF ni la réaction du poêle ; noter séparément
-  l'observation physique. Certains journaux ne contiennent aucun envoi.
-
-Voir [l'état du projet](../docs/agents/ETAT_PROJET.md) et
-[le guide des agents](../AGENTS.md). Conserver les originaux sans les réécrire ;
-placer les analyses dérivées dans un fichier distinct.
-
-Conserver le journal série complet, avec date, carte, branchements, fréquence,
-version du firmware, commande affichée par la télécommande et distance d'essai.
-Nom conseillé : `YYYYMMDD-HHMM_OFF.log`, puis `ON_P1`, `FAN1`, `FAN2`.
-L'identifiant télécommande est une donnée locale : éviter de publier les captures.
+Pour créer un journal, utilise les [outils de réception PC](../reception/README.md).

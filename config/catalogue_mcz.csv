@@ -1,0 +1,34 @@
+﻿numero;commande;trame;receptions;capture
+1;ON initial (flamme 1, ventilation 1);C8CC0225B87CA3;5;captures/20261109-205625-968354_live.log
+2;OFF intermédiaire;C8CC0224B84F92;5;captures/20261109-205625-968354_live.log
+3;ON après arrêt (flamme 1, ventilation 1);C8CC0225B87CA3;5;captures/20261109-205625-968354_live.log
+4;Flamme +1 (niveau 2);C8CC0229B839CE;5;captures/20261109-205625-968354_live.log
+5;Flamme +1 (niveau 3);C8CC022DB8F50A;5;captures/20261109-205625-968354_live.log
+6;Flamme +1 (niveau 4);C8CC0231B8B314;5;captures/20261109-205625-968354_live.log
+7;Flamme +1 (niveau 5, max);C8CC0235B87FD0;5;captures/20261109-205625-968354_live.log
+8;Ventilateur 1 +1 (niveau 2);C8CC0255B874FA;5;captures/20261109-205625-968354_live.log
+9;Ventilateur 1 +1 (niveau 3);C8CC0275B8721C;5;captures/20261109-205625-968354_live.log
+10;Ventilateur 1 +1 (niveau 4);C8CC0295B862AE;5;captures/20261109-205625-968354_live.log
+11;Ventilateur 1 +1 (niveau 5);C8CC02B5B86448;5;captures/20261109-205625-968354_live.log
+12;Ventilateur 1 +1 (auto);C8CC02D5B86F62;5;captures/20261109-205625-968354_live.log
+13;Ventilateur 1 -1 (niveau 5);C8CC02B5B86448;5;captures/20261109-205625-968354_live.log
+14;Ventilateur 1 -1 (niveau 4);C8CC0295B862AE;5;captures/20261109-205625-968354_live.log
+15;Ventilateur 1 -1 (niveau 3);C8CC0275B8721C;5;captures/20261109-205625-968354_live.log
+16;Ventilateur 1 -1 (niveau 2);C8CC0255B874FA;5;captures/20261109-205625-968354_live.log
+17;Ventilateur 1 -1 (niveau 1);C8CC0235B87FD0;5;captures/20261109-205625-968354_live.log
+18;Flamme -1 (niveau 4);C8CC0231B8B314;5;captures/20261109-205625-968354_live.log
+19;Flamme -1 (niveau 3);C8CC022DB8F50A;5;captures/20261109-205625-968354_live.log
+20;Flamme -1 (niveau 2);C8CC0229B839CE;5;captures/20261109-205625-968354_live.log
+21;Flamme -1 (niveau 1);C8CC0225B87CA3;5;captures/20261109-205625-968354_live.log
+22;OFF final;C8CC0224B84F92;5;captures/20261109-205625-968354_live.log
+23;Ventilateur 2 (niveau 2);C8CC02AD904BF8;5;captures/20261110-065656-157595_live.log
+24;Ventilateur 2 (niveau 3);C8CC02AD98CAF0;5;captures/20261110-065656-157595_live.log
+25;Ventilateur 2 (niveau 4);C8CC02ADA07DAB;5;captures/20261110-065656-157595_live.log
+26;Ventilateur 2 (niveau 5);C8CC02ADA8FCA3;5;captures/20261110-065656-157595_live.log
+27;Ventilateur 2 (Auto);C8CC02ADB06F9A;5;captures/20261110-065656-157595_live.log
+28;Ventilateur 2 (niveau 5);C8CC02ADA8FCA3;5;captures/20261110-065656-157595_live.log
+29;Ventilateur 2 (niveau 4);C8CC02ADA07DAB;5;captures/20261110-065656-157595_live.log
+30;Ventilateur 2 (niveau 3);C8CC02AD98CAF0;5;captures/20261110-065656-157595_live.log
+31;Ventilateur 2 (niveau 2);C8CC02AD904BF8;5;captures/20261110-065656-157595_live.log
+32;Ventilateur 2 (niveau 1);C8CC02AD88D8C1;5;captures/20261110-065656-157595_live.log
+33;Ventilateur 2 (arrêt);C8CC02AD8059C9;5;captures/20261110-065656-157595_live.log
