@@ -68,3 +68,7 @@ pas un état mesuré du poêle.
 
 Voir le [guide de validation](docs/agents/DEVELOPPEMENT.md) pour tester
 sans matériel et le [guide des agents](AGENTS.md) pour reprendre le projet.
+
+La cible `esp32dev-alexa` sert à vérifier la découverte sur l’Echo Pop.
+La cible `esp32dev-alexa-radio` relie ON et OFF au poêle.
+[Procédure Alexa](docs/TEST_ALEXA.md)

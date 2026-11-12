@@ -1,4 +1,5 @@
 #include "mcz_api.h"
+#include "mcz_alexa.h"
 #include <assert.h>
 #include <string.h>
 
@@ -19,6 +20,16 @@ int main() {
     const auto* off = mczProfile("off");
     const auto* fan2Off = mczProfile("3:5:0");
     assert(on && off && fan2Off && mczProfileCount() == 221);
+    const auto* alexaOn = mczProfile(MczAlexa::profileKey(true));
+    assert(alexaOn && !strcmp(alexaOn->hex, "C8CC02B598402A"));
+    assert(mczProfile(MczAlexa::profileKey(false)) == off);
+    assert(MczAlexa::isPowerRequest("{\"on\":true}"));
+    assert(MczAlexa::isPowerRequest(" \r\n{ \"on\" : false } \t"));
+    assert(!MczAlexa::isPowerRequest("{\"bri\":255}"));
+    assert(!MczAlexa::isPowerRequest("{\"on\":true,\"bri\":255}"));
+    assert(!MczAlexa::isPowerRequest("{\"on\":true,\"on\":false}"));
+    assert(!MczAlexa::isPowerRequest("{\"on\":\"true\"}"));
+    assert(!MczAlexa::isPowerRequest("{\"on\":true}garbage"));
     assert(mczProfile("3%3A5%3a0") == fan2Off);
     assert(mczProfileForFrame("C8CC02AD8059C9") == fan2Off);
     const auto* derived = mczProfile("1%3A1%3A0");
@@ -49,4 +60,7 @@ int main() {
     assert(!memcmp(last, off->frame, sizeof(last)));
     assert(api.execute(fourth, off, true, 9000, send) == MczResult::Uncertain);
     assert(calls == 2);
+    complete = true;
+    assert(api.execute("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", alexaOn, true, 9000, send) == MczResult::Sent);
+    assert(calls == 3 && !memcmp(last, alexaOn->frame, sizeof(last)));
 }

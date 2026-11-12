@@ -7,8 +7,79 @@
 #include <atomic>
 #include <esp_http_server.h>
 #include <lwip/sockets.h>
+#if defined(MCZ_ALEXA_TEST)
+#include <fauxmoESP.h>
+#endif
+#if defined(MCZ_ALEXA_RADIO)
+#include "mcz_alexa.h"
+#include <esp_system.h>
+#endif
 
 namespace {
+MczDispatch command = nullptr;
+#if defined(MCZ_ALEXA_RADIO)
+struct AlexaRequest {
+    bool on;
+    uint32_t receivedAt;
+};
+QueueHandle_t alexaRequests = nullptr;
+
+void queueAlexaPower(bool on) {
+    const AlexaRequest request{on, millis()};
+    if (alexaRequests) xQueueOverwrite(alexaRequests, &request);
+    else Serial.println("ALEXA result=unavailable");
+}
+
+void pollAlexaRadio(bool connected) {
+    AlexaRequest request;
+    if (!alexaRequests || xQueueReceive(alexaRequests, &request, 0) != pdTRUE) return;
+    if (!connected || WiFi.status() != WL_CONNECTED || uint32_t(millis() - request.receivedAt) > 500) {
+        Serial.println("ALEXA result=expired");
+        return;
+    }
+    char id[33];
+    snprintf(id, sizeof(id), "%08lx%08lx%08lx%08lx",
+             (unsigned long)esp_random(), (unsigned long)esp_random(),
+             (unsigned long)esp_random(), (unsigned long)esp_random());
+    const char* profile = MczAlexa::profileKey(request.on);
+    const auto result = command(id, mczProfile(profile));
+    Serial.printf("ALEXA profile=%s result=%s\n", profile, mczResultName(result));
+}
+#endif
+
+#if defined(MCZ_ALEXA_TEST)
+constexpr uint16_t HTTP_PORT = 8080;
+fauxmoESP alexaTest;
+bool alexaConfigured = false;
+bool alexaConnected = false;
+
+void pollAlexaTest(bool connected) {
+    if (connected && !alexaConfigured) {
+        alexaTest.setPort(80);
+        alexaTest.addDevice("Test Alexa MCZ");
+        alexaTest.onSetState([](unsigned char id, const char* name, bool state, unsigned char value) {
+            Serial.printf("ALEXA id=%u name=%s state=%s value=%u\n",
+                          unsigned(id), name, state ? "ON" : "OFF", unsigned(value));
+#if defined(MCZ_ALEXA_RADIO)
+            if (id == 0) queueAlexaPower(state);
+#endif
+        });
+        alexaConfigured = true;
+    }
+    if (connected != alexaConnected) {
+        alexaConnected = connected;
+        alexaTest.enable(connected);
+#if defined(MCZ_ALEXA_RADIO)
+        Serial.printf("ALEXA radio %s\n", connected ? "ready on TCP 80" : "paused");
+#else
+        Serial.printf("ALEXA test %s\n", connected ? "ready on TCP 80" : "paused");
+#endif
+    }
+    if (connected) alexaTest.handle();
+}
+#else
+constexpr uint16_t HTTP_PORT = 80;
+#endif
 constexpr char STORAGE[] = "mcz-network";
 constexpr char SETTINGS[] = "credentials-v1";
 struct Credentials {
@@ -18,7 +89,6 @@ struct Credentials {
 };
 Credentials credentials = {};
 httpd_handle_t server = nullptr;
-MczDispatch command = nullptr;
 std::atomic<bool> ready{false};
 std::atomic<uint32_t> count{0};
 uint32_t lastStart = 0;
@@ -91,16 +161,18 @@ bool localRequest(httpd_req_t* request) {
         return false;
     }
     const String ip = WiFi.localIP().toString();
-    char host[19], origin[26];
+    const String authority = ip + ":" + HTTP_PORT;
+    char host[22], origin[29];
     if (httpd_req_get_hdr_value_str(request, "Host", host, sizeof(host)) != ESP_OK
-        || (ip != host && ip + ":80" != host)) {
+        || (authority != host && (HTTP_PORT != 80 || ip != host))) {
         sendJson(request, "403 Forbidden", "{\"error\":\"invalid_host\"}");
         return false;
     }
     const String expectedOrigin = String("http://") + ip;
     if (httpd_req_get_hdr_value_len(request, "Origin")
         && (httpd_req_get_hdr_value_str(request, "Origin", origin, sizeof(origin)) != ESP_OK
-            || (expectedOrigin != origin && expectedOrigin + ":80" != origin))) {
+            || (expectedOrigin + ":" + HTTP_PORT != origin
+                && (HTTP_PORT != 80 || expectedOrigin != origin)))) {
         sendJson(request, "403 Forbidden", "{\"error\":\"invalid_origin\"}");
         return false;
     }
@@ -209,6 +281,7 @@ bool stopServer() {
 
 void startServer() {
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+    config.server_port = HTTP_PORT;
     // Legacy RMT interrupts must be allocated and freed on the same core.
     config.core_id = xPortGetCoreID();
     config.stack_size = 6144;
@@ -246,6 +319,9 @@ void startServer() {
 
 void initNetwork(MczDispatch dispatch) {
     command = dispatch;
+#if defined(MCZ_ALEXA_RADIO)
+    alexaRequests = xQueueCreate(1, sizeof(AlexaRequest));
+#endif
     WiFi.persistent(false);
 
     Preferences storage;
@@ -261,10 +337,17 @@ void initNetwork(MczDispatch dispatch) {
 }
 
 void pollNetwork(bool radioReady, uint32_t txCount) {
+    const bool connected = credentials.ssid[0] && WiFi.status() == WL_CONNECTED;
+#if defined(MCZ_ALEXA_TEST)
+    pollAlexaTest(connected);
+#endif
+#if defined(MCZ_ALEXA_RADIO)
+    pollAlexaRadio(connected);
+#endif
     if (!credentials.ssid[0]) return;
     ready = radioReady;
     count = txCount;
-    if (WiFi.status() == WL_CONNECTED) {
+    if (connected) {
         const uint32_t now = millis();
         if (!server && uint32_t(now - lastStart) >= 1000) {
             lastStart = now;
@@ -277,9 +360,9 @@ void pollNetwork(bool radioReady, uint32_t txCount) {
 
 void printNetworkStatus() {
     const bool connected = server && WiFi.status() == WL_CONNECTED;
-    Serial.printf("APP {\"type\":\"network\",\"configured\":%s,\"connected\":%s,\"ip\":\"%s\"}\n",
+    Serial.printf("APP {\"type\":\"network\",\"configured\":%s,\"connected\":%s,\"ip\":\"%s\",\"port\":%u}\n",
                   credentials.ssid[0] ? "true" : "false", connected ? "true" : "false",
-                  connected ? WiFi.localIP().toString().c_str() : "");
+                  connected ? WiFi.localIP().toString().c_str() : "", unsigned(HTTP_PORT));
 }
 
 void configureNetwork(char* arguments) {

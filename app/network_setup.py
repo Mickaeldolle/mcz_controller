@@ -54,8 +54,11 @@ def credentials():
 
 def show_status(state):
     if state["connected"]:
-        print(f"Page de commande : http://{state['ip']}/")
-        print(f"API Wi-Fi : http://{state['ip']}/api/v1/status")
+        port = state.get("port", 80)
+        suffix = "" if port == 80 else f":{port}"
+        base = f"http://{state['ip']}{suffix}"
+        print(f"Page de commande : {base}/")
+        print(f"API Wi-Fi : {base}/api/v1/status")
     elif state["configured"]:
         print("Wi-Fi enregistré, connexion non établie.")
     else:
