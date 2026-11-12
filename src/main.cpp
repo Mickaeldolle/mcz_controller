@@ -6,6 +6,9 @@
 #include "mcz_encoder.h"
 #include "mcz_network.h"
 #include "mcz_profiles.h"
+#if defined(MCZ_TEMPERATURE_DISPLAY)
+#include "mcz_temperature.h"
+#endif
 
 namespace {
 constexpr rmt_channel_t CHANNEL = RMT_CHANNEL_0;
@@ -129,6 +132,9 @@ void setup() {
     Serial.setRxBufferSize(512);
     Serial.begin(115200);
     delay(500);
+#if defined(MCZ_TEMPERATURE_DISPLAY)
+    beginTemperatureDisplay();
+#endif
     initNetwork(dispatch);
     Serial.println("MCZ API v1: USB j, !TX, !NET; Wi-Fi optional.");
     radioLock = xSemaphoreCreateMutex();
@@ -143,5 +149,8 @@ void setup() {
 void loop() {
     pollSerial();
     pollNetwork(ready.load(), txCount.load());
+#if defined(MCZ_TEMPERATURE_DISPLAY)
+    pollTemperatureDisplay();
+#endif
     delay(1);
 }
