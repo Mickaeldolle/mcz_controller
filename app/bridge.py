@@ -23,6 +23,7 @@ class Bridge:
         self.last_send = 0.0
         self.last = None
         self.tx_count = None
+        self.ambient = None
         self.thread = threading.Thread(target=self._read, daemon=True)
 
     def start(self):
@@ -30,12 +31,17 @@ class Bridge:
 
     def status(self):
         with self.lock:
-            return {"connected": self.ready and time.monotonic() - self.seen < 5,
+            now = time.monotonic()
+            fresh = now - self.seen < 5
+            status = {"connected": self.ready and fresh,
                     "busy": self.pending is not None,
-                    "cooldown": max(0, 3 - (time.monotonic() - self.last_send)),
+                    "cooldown": max(0, 3 - (now - self.last_send)),
                     "profiles_ready": DEFAULT_ON in self.presets and "off" in self.presets,
                     "presets": sorted(self.presets), "last": self.last,
                     "port": self.port_name, "tx_count": self.tx_count}
+            if fresh and self.ambient is not None:
+                status["ambient"] = dict(self.ambient)
+            return status
 
     def command(self, action, request_id, profile=None):
         if action not in ("on", "off"):
@@ -116,6 +122,7 @@ class Bridge:
                 with self.lock:
                     self.device = None
                     self.ready = False
+                    self.ambient = None
                 self.wake.set()
             self.stop.wait(2)
 
@@ -133,6 +140,13 @@ class Bridge:
                 self.ready = msg.get("ready") is True and msg.get("frequency") == MCZ_FREQUENCY_HZ
                 self.seen = time.monotonic()
                 self.tx_count = msg.get("tx_count")
+                ambient = msg.get("ambient")
+                self.ambient = None
+                if isinstance(ambient, dict):
+                    self.ambient = {}
+                    for name, maximum in (("temperature_c", 50), ("humidity_pct", 100)):
+                        value = ambient.get(name)
+                        self.ambient[name] = value if type(value) is int and 0 <= value <= maximum else None
             elif self.pending is not None and msg.get("type") == "result" and msg.get("id") == self.pending:
                 result = msg.get("result")
                 if result in ("sent", "uncertain", "busy", "unavailable", "rejected"):

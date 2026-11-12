@@ -65,8 +65,14 @@ bool transmitCommand(const uint8_t raw[7]) {
 }
 
 void appStatus() {
-    Serial.printf("APP {\"type\":\"status\",\"version\":1,\"ready\":%s,\"frequency\":%lu,\"tx_count\":%lu}\n",
-        ready.load() ? "true" : "false", (unsigned long)MCZ_FREQUENCY_HZ, (unsigned long)txCount.load());
+#if defined(MCZ_TEMPERATURE_DISPLAY)
+    char ambient[AMBIENT_STATUS_SIZE];
+    formatAmbientStatus(ambient);
+#else
+    constexpr char ambient[] = "";
+#endif
+    Serial.printf("APP {\"type\":\"status\",\"version\":1,\"ready\":%s,\"frequency\":%lu,\"tx_count\":%lu%s}\n",
+        ready.load() ? "true" : "false", (unsigned long)MCZ_FREQUENCY_HZ, (unsigned long)txCount.load(), ambient);
 }
 MczResult dispatch(const char* id, const MczProfile* profile) {
     if (!profile) return MczResult::Rejected;

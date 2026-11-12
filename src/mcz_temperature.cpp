@@ -13,9 +13,18 @@ constexpr int SDA_PIN = 21;
 constexpr int SCL_PIN = 22;
 constexpr uint32_t I2C_FREQUENCY = 100000;
 constexpr uint32_t SAMPLE_INTERVAL_MS = 3000;
+constexpr uint32_t MEASUREMENT_EXPIRY_MS = 3 * SAMPLE_INTERVAL_MS;
+
+struct AmbientMeasurement {
+    int temperature;
+    int humidity;
+    uint32_t timestamp;
+};
 
 DHT sensor(DHT_PIN, DHT11);
 Adafruit_SSD1306 display(128, 64, &Wire, -1, I2C_FREQUENCY, I2C_FREQUENCY);
+portMUX_TYPE ambientLock = portMUX_INITIALIZER_UNLOCKED;
+AmbientMeasurement ambient{-1, -1, 0};
 bool displayReady = false;
 uint32_t lastSample = 0;
 int displayedTemperature = -2;
@@ -24,6 +33,14 @@ int displayedHumidity = -2;
 int roundedMeasurement(float value, float maximum) {
     return std::isfinite(value) && value >= 0 && value <= maximum
         ? int(std::lround(value)) : -1;
+}
+
+AmbientMeasurement latestAmbient() {
+    portENTER_CRITICAL(&ambientLock);
+    const auto latest = ambient;
+    portEXIT_CRITICAL(&ambientLock);
+    return uint32_t(millis() - latest.timestamp) < MEASUREMENT_EXPIRY_MS
+        ? latest : AmbientMeasurement{-1, -1, 0};
 }
 
 void drawMeasurements(int temperature, int humidity) {
@@ -91,6 +108,9 @@ void pollTemperatureDisplay() {
 
     const int temperature = roundedMeasurement(sensor.readTemperature(), 50);
     const int humidity = roundedMeasurement(sensor.readHumidity(), 100);
+    portENTER_CRITICAL(&ambientLock);
+    ambient = {temperature, humidity, now};
+    portEXIT_CRITICAL(&ambientLock);
     if (temperature >= 0) Serial.printf("TEMP DHT11=%d C\n", temperature);
     else Serial.println(F("TEMP DHT11 indisponible"));
     if (humidity >= 0) Serial.printf("TEMP DHT11 humidity=%d %%\n", humidity);
@@ -101,5 +121,14 @@ void pollTemperatureDisplay() {
         displayedTemperature = temperature;
         displayedHumidity = humidity;
     }
+}
+
+void formatAmbientStatus(char (&json)[AMBIENT_STATUS_SIZE]) {
+    const auto latest = latestAmbient();
+    char temperature[12] = "null";
+    char humidity[12] = "null";
+    if (latest.temperature >= 0) snprintf(temperature, sizeof(temperature), "%d", latest.temperature);
+    if (latest.humidity >= 0) snprintf(humidity, sizeof(humidity), "%d", latest.humidity);
+    snprintf(json, sizeof(json), ",\"ambient\":{\"temperature_c\":%s,\"humidity_pct\":%s}", temperature, humidity);
 }
 #endif

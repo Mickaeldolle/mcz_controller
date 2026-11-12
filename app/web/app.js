@@ -2,6 +2,9 @@
 const on = document.getElementById("on");
 const off = document.getElementById("off");
 const connection = document.getElementById("connection");
+const ambient = document.getElementById("ambient");
+const ambientTemperature = document.getElementById("ambient-temperature");
+const ambientHumidity = document.getElementById("ambient-humidity");
 const feedback = document.getElementById("feedback");
 const settings = document.getElementById("settings");
 const power = document.getElementById("power");
@@ -23,6 +26,7 @@ let hasResult = false;
 let serverError = "";
 let restoreFocus = null;
 let refreshId = 0;
+let hasAmbient = false;
 
 function fanText(value) {
   if (value === "6") return "Auto";
@@ -37,11 +41,23 @@ function selectedProfile(fan2Level) {
   return fan2Level ? `${base}:${fan2Level}` : base;
 }
 
+function renderMeasurement(element, value, maximum, unit) {
+  const available = Number.isInteger(value) && value >= 0 && value <= maximum;
+  const label = available ? `${value}\u00a0${unit}` : "Indisponible";
+  if (element.textContent !== label) element.textContent = label;
+  element.classList.toggle("unavailable", !available);
+}
+
 function render() {
   const connected = status?.connected === true;
   connection.textContent = status?.preview ? "Aperçu · aucune émission"
     : connected ? "ESP32 connecté" : "ESP32 déconnecté";
   connection.classList.toggle("connected", connected);
+  if (status?.ambient) hasAmbient = true;
+  else if (connected) hasAmbient = false;
+  ambient.hidden = !hasAmbient;
+  renderMeasurement(ambientTemperature, status?.ambient?.temperature_c, 50, "°C");
+  renderMeasurement(ambientHumidity, status?.ambient?.humidity_pct, 100, "%");
   const enabled = connected && status.profiles_ready && !sending && !status.busy && status.cooldown <= 0;
   const presets = status?.presets ?? [];
   const adjustable = presets.some(profile => profile !== "off");
@@ -124,7 +140,7 @@ async function refresh() {
     if (id !== refreshId) return;
     if (wifi && (next.version !== 1 || !Array.isArray(next.profiles))) throw new Error("api");
     status = wifi ? {connected: true, profiles_ready: next.ready === true,
-      presets: next.profiles, cooldown: Math.max(0, cooldownUntil - performance.now())} : next;
+      presets: next.profiles, ambient: next.ambient, cooldown: Math.max(0, cooldownUntil - performance.now())} : next;
     serverError = "";
   } catch {
     if (id !== refreshId) return;

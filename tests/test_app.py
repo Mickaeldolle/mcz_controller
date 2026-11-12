@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app.bridge import Bridge
-from app.catalog import CATALOG, ROOT, load_command_presets, load_presets, validate_frame
+from app.catalog import CATALOG, MCZ_FREQUENCY_HZ, ROOT, load_command_presets, load_presets, validate_frame
 from app.server import make_handler
 
 
@@ -28,6 +28,25 @@ class Device:
 
 
 class BridgeTests(unittest.TestCase):
+    def test_ambient_status_validates_values_and_expires(self):
+        bridge = Bridge("FAKE")
+        status = {"type": "status", "ready": False, "frequency": MCZ_FREQUENCY_HZ}
+
+        def receive(ambient):
+            bridge._handle_line(b"APP " + json.dumps({**status, "ambient": ambient}).encode())
+
+        self.assertNotIn("ambient", bridge.status())
+        receive({"temperature_c": 0, "humidity_pct": 100})
+        self.assertEqual(bridge.status()["ambient"], {"temperature_c": 0, "humidity_pct": 100})
+        self.assertFalse(bridge.status()["connected"])
+        receive({"temperature_c": True, "humidity_pct": 101})
+        self.assertEqual(bridge.status()["ambient"], {"temperature_c": None, "humidity_pct": None})
+        receive({"temperature_c": 19, "humidity_pct": 71})
+        with patch("app.bridge.time.monotonic", return_value=bridge.seen + 5):
+            self.assertNotIn("ambient", bridge.status())
+        bridge._handle_line(b"APP " + json.dumps(status).encode())
+        self.assertNotIn("ambient", bridge.status())
+
     def test_malformed_usb_messages_do_not_stop_reader(self):
         b = Bridge("FAKE")
         for payload in (b"[]", b"null", b"true", b"42", b'"text"', b"{", b"\xff",

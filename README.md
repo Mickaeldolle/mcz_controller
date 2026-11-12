@@ -79,9 +79,10 @@ La cible `esp32dev-alexa-temperature` ajoute l’affichage au firmware Alexa rad
 Branche le signal du DHT11 sur GPIO26 et l’OLED I²C sur SDA GPIO21 et SCL GPIO22,
 avec une alimentation commune en 3,3 V. La broche 3 (`GDO0`) du CC1101 se
 raccorde à GPIO27. Réserve GPIO26 au signal `S` du DHT11.
-Le firmware essaie les adresses OLED `0x3C` et `0x3D`. L’écran et le journal USB
-indiquent la température en °C et l’humidité relative en pourcentage. Les
-mesures sont actualisées toutes les trois secondes.
+Le firmware essaie les adresses OLED `0x3C` et `0x3D`. L’écran, le journal USB
+et la page de commande (Wi-Fi ou PC via USB) indiquent la température en °C et
+l’humidité relative en pourcentage. Les mesures sont actualisées toutes les
+trois secondes.
 
 Pour valider le montage, vérifie que l’OLED affiche la température, puis
 compare-la à celle d’un thermomètre placé à côté, hors du souffle du poêle.
@@ -94,3 +95,5 @@ indiqué 19 °C dans le journal USB. Le propriétaire a confirmé que la tempér
 s’affiche sur l’OLED. Après téléversement de la version avec humidité, trois
 relevés USB ont indiqué 19 °C et 71 % d’humidité relative, avec un compteur
 radio à zéro. Le rendu de la ligne d’humidité reste à vérifier sur l’OLED.
+Après installation de l’affichage Web, les statuts USB et Wi-Fi ont tous deux
+indiqué 18 °C et 72 % d’humidité relative, avec un compteur radio à zéro.

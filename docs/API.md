@@ -80,6 +80,13 @@ Un exemple de réponse de statut avec une liste de profils abrégée.
 }
 ```
 
+Avec la variante équipée du DHT11, le statut Wi-Fi et la réponse USB à `j`
+ajoutent `"ambient": {"temperature_c": 19, "humidity_pct": 71}`. Les deux
+valeurs entières sont actualisées toutes les trois secondes. Une mesure
+invalide ou âgée de neuf secondes est renvoyée comme `null`. Les variantes
+sans capteur omettent `ambient`. La page PC relaie les mesures avec son statut
+local tant que la réponse USB est récente.
+
 | HTTP | Résultat | Interprétation |
 |---:|---|---|
 | 200 | `sent` | Émission terminée selon le firmware et retour au repos confirmé |

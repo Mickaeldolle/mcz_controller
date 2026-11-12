@@ -46,6 +46,9 @@ Chargement initial désactivé ; connexion, déconnexion, attente, résultat et 
 Boutons natifs, clic ou Entrée/Espace. Focus visible, survol, pression et indisponibilité. Désactivation pendant l'envoi et trois secondes de délai. Pas de nouvelle tentative automatique.
 ### Navigation and data display
 Une seule page, sans menu ni tableau.
+Les mesures ambiantes du DHT11 s’affichent sur deux colonnes avant les réglages.
+Elles sont masquées sur un firmware sans capteur et indiquent « Indisponible »
+pour chaque valeur manquante, sans décaler les commandes lors d’une interruption.
 ### Forms and overlays
 Trois curseurs natifs à pas entier, chacun avec un libellé et la valeur choisie. Le curseur du ventilateur 2 apparaît quand le catalogue contient ses réglages. Son premier cran conserve le profil d’origine, suivi de l’arrêt (0), des niveaux 1 à 5 et d’Auto (6). Le texte sous les contrôles indique les combinaisons disponibles. Allumer / appliquer envoie le réglage choisi. Éteindre reste indépendant des réglages.
 La page de test Wi-Fi ouvre directement la commande. Le même composant de retour décrit l’envoi dans les deux modes.

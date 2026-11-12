@@ -14,6 +14,9 @@
 #include "mcz_alexa.h"
 #include <esp_system.h>
 #endif
+#if defined(MCZ_TEMPERATURE_DISPLAY)
+#include "mcz_temperature.h"
+#endif
 
 namespace {
 MczDispatch command = nullptr;
@@ -230,10 +233,18 @@ esp_err_t webResponse(httpd_req_t* request) {
 esp_err_t statusResponse(httpd_req_t* request) {
     if (!authorized(request)) return ESP_OK;
     String body = String("{\"version\":1,\"ready\":") + (ready.load() ? "true" : "false")
-        + ",\"frequency\":" + String(MCZ_FREQUENCY_HZ) + ",\"tx_count\":" + String(count.load())
-        + ",\"profiles\":[";
-    if (!body.reserve(body.length() + mczProfileCount() * 8 + 2))
+        + ",\"frequency\":" + String(MCZ_FREQUENCY_HZ) + ",\"tx_count\":" + String(count.load());
+#if defined(MCZ_TEMPERATURE_DISPLAY)
+    char ambient[AMBIENT_STATUS_SIZE];
+    formatAmbientStatus(ambient);
+#else
+    constexpr char ambient[] = "";
+#endif
+    constexpr char profilesStart[] = ",\"profiles\":[";
+    if (!body.reserve(body.length() + strlen(ambient) + sizeof(profilesStart) - 1 + mczProfileCount() * 8 + 2))
         return sendJson(request, "503 Service Unavailable", "{\"error\":\"status_unavailable\"}");
+    body += ambient;
+    body += profilesStart;
     for (size_t i = 0; i < mczProfileCount(); ++i) {
         if (i) body += ',';
         body += '"';
