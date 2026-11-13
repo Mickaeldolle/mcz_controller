@@ -7,6 +7,9 @@
 #include <atomic>
 #include <esp_http_server.h>
 #include <lwip/sockets.h>
+#if defined(MCZ_OTA)
+#include "mcz_ota.h"
+#endif
 #if defined(MCZ_ALEXA_TEST)
 #include <fauxmoESP.h>
 #endif
@@ -28,6 +31,12 @@ struct AlexaRequest {
 QueueHandle_t alexaRequests = nullptr;
 
 void queueAlexaPower(bool on) {
+#if defined(MCZ_OTA)
+    if (radioMaintenanceActive()) {
+        Serial.println("ALEXA result=unavailable");
+        return;
+    }
+#endif
     const AlexaRequest request{on, millis()};
     if (alexaRequests) xQueueOverwrite(alexaRequests, &request);
     else Serial.println("ALEXA result=unavailable");
@@ -92,6 +101,10 @@ struct Credentials {
 };
 Credentials credentials = {};
 httpd_handle_t server = nullptr;
+#if defined(MCZ_OTA)
+constexpr uint16_t OTA_PORT = 8081;
+httpd_handle_t otaServer = nullptr;
+#endif
 std::atomic<bool> ready{false};
 std::atomic<uint32_t> count{0};
 uint32_t lastStart = 0;
@@ -158,24 +171,24 @@ bool localClient(httpd_req_t* request) {
         && (address & mask) == (uint32_t(WiFi.localIP()) & mask);
 }
 
-bool localRequest(httpd_req_t* request) {
+bool localRequest(httpd_req_t* request, uint16_t port = HTTP_PORT) {
     if (!localClient(request)) {
         sendJson(request, "403 Forbidden", "{\"error\":\"local_subnet_required\"}");
         return false;
     }
     const String ip = WiFi.localIP().toString();
-    const String authority = ip + ":" + HTTP_PORT;
+    const String authority = ip + ":" + port;
     char host[22], origin[29];
     if (httpd_req_get_hdr_value_str(request, "Host", host, sizeof(host)) != ESP_OK
-        || (authority != host && (HTTP_PORT != 80 || ip != host))) {
+        || (authority != host && (port != 80 || ip != host))) {
         sendJson(request, "403 Forbidden", "{\"error\":\"invalid_host\"}");
         return false;
     }
     const String expectedOrigin = String("http://") + ip;
     if (httpd_req_get_hdr_value_len(request, "Origin")
         && (httpd_req_get_hdr_value_str(request, "Origin", origin, sizeof(origin)) != ESP_OK
-            || (expectedOrigin + ":" + HTTP_PORT != origin
-                && (HTTP_PORT != 80 || expectedOrigin != origin)))) {
+            || (expectedOrigin + ":" + port != origin
+                && (port != 80 || expectedOrigin != origin)))) {
         sendJson(request, "403 Forbidden", "{\"error\":\"invalid_origin\"}");
         return false;
     }
@@ -284,9 +297,9 @@ esp_err_t commandResponse(httpd_req_t* request) {
     return sendJson(request, resultStatus(result), body);
 }
 
-bool stopServer() {
-    if (server && httpd_stop(server) != ESP_OK) return false;
-    server = nullptr;
+bool stopServer(httpd_handle_t& handle) {
+    if (handle && httpd_stop(handle) != ESP_OK) return false;
+    handle = nullptr;
     return true;
 }
 
@@ -311,7 +324,7 @@ void startServer() {
     request.handler = commandResponse;
     if (httpd_register_uri_handler(server, &status) != ESP_OK
         || httpd_register_uri_handler(server, &request) != ESP_OK) {
-        stopServer();
+        stopServer(server);
         return;
     }
     for (const auto& asset : assets) {
@@ -321,15 +334,48 @@ void startServer() {
         route.handler = webResponse;
         route.user_ctx = const_cast<WebAsset*>(&asset);
         if (httpd_register_uri_handler(server, &route) != ESP_OK) {
-            stopServer();
+            stopServer(server);
             return;
         }
     }
 }
+
+#if defined(MCZ_OTA)
+void startOtaServer() {
+    httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+    config.server_port = OTA_PORT;
+    ++config.ctrl_port;
+    config.stack_size = 6144;
+    config.max_open_sockets = 2;
+    config.max_uri_handlers = 2;
+    config.recv_wait_timeout = 2;
+    config.send_wait_timeout = 2;
+    config.lru_purge_enable = true;
+    if (httpd_start(&otaServer, &config) != ESP_OK) return;
+
+    httpd_uri_t challenge = {};
+    challenge.uri = "/api/v1/ota/challenge";
+    challenge.method = HTTP_GET;
+    challenge.handler = [](httpd_req_t* req) { return localRequest(req, OTA_PORT) ? otaChallenge(req) : ESP_OK; };
+    httpd_uri_t upload = {};
+    upload.uri = "/api/v1/ota";
+    upload.method = HTTP_POST;
+    upload.handler = [](httpd_req_t* req) { return localRequest(req, OTA_PORT) ? otaUpload(req) : ESP_FAIL; };
+    if (httpd_register_uri_handler(otaServer, &challenge) != ESP_OK
+        || httpd_register_uri_handler(otaServer, &upload) != ESP_OK) {
+        stopServer(otaServer);
+        return;
+    }
+    Serial.printf("OTA ready on TCP %u\n", unsigned(OTA_PORT));
+}
+#endif
 }
 
 void initNetwork(MczDispatch dispatch) {
     command = dispatch;
+#if defined(MCZ_OTA)
+    initOta();
+#endif
 #if defined(MCZ_ALEXA_RADIO)
     alexaRequests = xQueueCreate(1, sizeof(AlexaRequest));
 #endif
@@ -360,12 +406,18 @@ void pollNetwork(bool radioReady, uint32_t txCount) {
     count = txCount;
     if (connected) {
         const uint32_t now = millis();
-        if (!server && uint32_t(now - lastStart) >= 1000) {
+        if (uint32_t(now - lastStart) >= 1000) {
             lastStart = now;
-            startServer();
+            if (!server) startServer();
+#if defined(MCZ_OTA)
+            if (!otaServer && otaConfigured()) startOtaServer();
+#endif
         }
-    } else if (server) {
-        stopServer();
+    } else {
+#if defined(MCZ_OTA)
+        stopServer(otaServer);
+#endif
+        stopServer(server);
     }
 }
 
@@ -392,7 +444,12 @@ void configureNetwork(char* arguments) {
     }
     bool saved = false;
     Preferences storage;
-    if (valid && stopServer() && storage.begin(STORAGE, false)) {
+#if defined(MCZ_OTA)
+    const bool otaStopped = !valid || stopServer(otaServer);
+#else
+    constexpr bool otaStopped = true;
+#endif
+    if (valid && otaStopped && stopServer(server) && storage.begin(STORAGE, false)) {
         saved = clear ? !storage.isKey(SETTINGS) || storage.remove(SETTINGS)
                       : storage.putBytes(SETTINGS, &updated, sizeof(updated)) == sizeof(updated);
         storage.end();
@@ -404,3 +461,11 @@ void configureNetwork(char* arguments) {
     Serial.printf("APP {\"type\":\"network_config\",\"result\":\"%s\"}\n",
                   saved ? "saved" : valid ? "storage_error" : "rejected");
 }
+
+#if defined(MCZ_OTA)
+void configureNetworkOta(const char* arguments) {
+    // Join the HTTP task before changing its credentials or challenge.
+    const char* result = stopServer(otaServer) ? configureOta(arguments) : "unavailable";
+    Serial.printf("APP {\"type\":\"ota_config\",\"result\":\"%s\"}\n", result);
+}
+#endif

@@ -6,6 +6,9 @@
 #include "mcz_encoder.h"
 #include "mcz_network.h"
 #include "mcz_profiles.h"
+#if defined(MCZ_OTA)
+#include "mcz_ota.h"
+#endif
 #if defined(MCZ_TEMPERATURE_DISPLAY)
 #include "mcz_temperature.h"
 #endif
@@ -16,8 +19,18 @@ constexpr uint8_t MEMORY_BLOCKS = 8;
 constexpr size_t HARDWARE_ITEMS = MEMORY_BLOCKS * RMT_MEM_ITEM_NUM;
 std::atomic<bool> ready{false};
 std::atomic<uint32_t> txCount{0};
+#if defined(MCZ_OTA)
+std::atomic<bool> updatingFirmware{false};
+#endif
 SemaphoreHandle_t radioLock = nullptr;
 MczApi api;
+
+bool radioReady() {
+#if defined(MCZ_OTA)
+    if (radioMaintenanceActive()) return false;
+#endif
+    return ready.load();
+}
 
 bool initTransmit() {
     rmt_config_t cfg = {};
@@ -72,13 +85,13 @@ void appStatus() {
     constexpr char ambient[] = "";
 #endif
     Serial.printf("APP {\"type\":\"status\",\"version\":1,\"ready\":%s,\"frequency\":%lu,\"tx_count\":%lu%s}\n",
-        ready.load() ? "true" : "false", (unsigned long)MCZ_FREQUENCY_HZ, (unsigned long)txCount.load(), ambient);
+        radioReady() ? "true" : "false", (unsigned long)MCZ_FREQUENCY_HZ, (unsigned long)txCount.load(), ambient);
 }
 MczResult dispatch(const char* id, const MczProfile* profile) {
     if (!profile) return MczResult::Rejected;
     if (!radioLock) return MczResult::Unavailable;
     if (xSemaphoreTake(radioLock, pdMS_TO_TICKS(50)) != pdTRUE) return MczResult::Busy;
-    const auto result = api.execute(id, profile, ready.load(), millis(), transmitCommand);
+    const auto result = api.execute(id, profile, radioReady(), millis(), transmitCommand);
     xSemaphoreGive(radioLock);
     return result;
 }
@@ -88,6 +101,10 @@ void serialCommand(char* line) {
         printNetworkStatus();
     } else if (!strncmp(line, "!WIFI ", 6)) {
         configureNetwork(line + 6);
+#if defined(MCZ_OTA)
+    } else if (!strncmp(line, "!OTA ", 5)) {
+        configureNetworkOta(line + 5);
+#endif
     } else if (!strncmp(line, "!TX ", 4) && strlen(line) == 51 && line[36] == ' ') {
         line[36] = 0;
         const char* id = line + 4;
@@ -134,6 +151,23 @@ void pollSerial() {
 
 }
 
+#if defined(MCZ_OTA)
+bool beginRadioMaintenance() {
+    if (!radioLock || xSemaphoreTake(radioLock, 0) != pdTRUE) return false;
+    updatingFirmware = true;
+    xSemaphoreGive(radioLock);
+    return true;
+}
+
+void endRadioMaintenance() {
+    updatingFirmware = false;
+}
+
+bool radioMaintenanceActive() {
+    return updatingFirmware.load();
+}
+#endif
+
 void setup() {
     Serial.setRxBufferSize(512);
     Serial.begin(115200);
@@ -154,9 +188,13 @@ void setup() {
 }
 void loop() {
     pollSerial();
-    pollNetwork(ready.load(), txCount.load());
+    pollNetwork(radioReady(), txCount.load());
 #if defined(MCZ_TEMPERATURE_DISPLAY)
+#if defined(MCZ_OTA)
+    pollTemperatureDisplay(radioMaintenanceActive());
+#else
     pollTemperatureDisplay();
+#endif
 #endif
     delay(1);
 }

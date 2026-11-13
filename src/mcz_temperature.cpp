@@ -26,6 +26,7 @@ Adafruit_SSD1306 display(128, 64, &Wire, -1, I2C_FREQUENCY, I2C_FREQUENCY);
 portMUX_TYPE ambientLock = portMUX_INITIALIZER_UNLOCKED;
 AmbientMeasurement ambient{-1, -1, 0};
 bool displayReady = false;
+bool displayingUpdate = false;
 uint32_t lastSample = 0;
 int displayedTemperature = -2;
 int displayedHumidity = -2;
@@ -72,6 +73,32 @@ void drawMeasurements(int temperature, int humidity) {
     }
     display.display();
 }
+
+void drawFirmwareUpdate() {
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setCursor(31, 14);
+    display.print(F("Mise "));
+    display.write(uint8_t(133));  // Accented a in CP437.
+    display.print(F(" jour"));
+    display.setTextSize(2);
+    display.setCursor(16, 30);
+    display.print(F("En cours"));
+    display.display();
+}
+
+void sampleAmbient(uint32_t now) {
+    lastSample = now;
+    const int temperature = roundedMeasurement(sensor.readTemperature(), 50);
+    const int humidity = roundedMeasurement(sensor.readHumidity(), 100);
+    portENTER_CRITICAL(&ambientLock);
+    ambient = {temperature, humidity, now};
+    portEXIT_CRITICAL(&ambientLock);
+    if (temperature >= 0) Serial.printf("TEMP DHT11=%d C\n", temperature);
+    else Serial.println(F("TEMP DHT11 indisponible"));
+    if (humidity >= 0) Serial.printf("TEMP DHT11 humidity=%d %%\n", humidity);
+    else Serial.println(F("TEMP DHT11 humidity indisponible"));
+}
 }
 
 void beginTemperatureDisplay() {
@@ -101,26 +128,25 @@ void beginTemperatureDisplay() {
     display.display();
 }
 
-void pollTemperatureDisplay() {
+void pollTemperatureDisplay(bool updatingFirmware) {
     const uint32_t now = millis();
-    if (uint32_t(now - lastSample) < SAMPLE_INTERVAL_MS) return;
-    lastSample = now;
+    const bool sampleDue = uint32_t(now - lastSample) >= SAMPLE_INTERVAL_MS;
+    if (sampleDue) sampleAmbient(now);
+    if (!displayReady) return;
 
-    const int temperature = roundedMeasurement(sensor.readTemperature(), 50);
-    const int humidity = roundedMeasurement(sensor.readHumidity(), 100);
-    portENTER_CRITICAL(&ambientLock);
-    ambient = {temperature, humidity, now};
-    portEXIT_CRITICAL(&ambientLock);
-    if (temperature >= 0) Serial.printf("TEMP DHT11=%d C\n", temperature);
-    else Serial.println(F("TEMP DHT11 indisponible"));
-    if (humidity >= 0) Serial.printf("TEMP DHT11 humidity=%d %%\n", humidity);
-    else Serial.println(F("TEMP DHT11 humidity indisponible"));
-
-    if (displayReady && (displayedTemperature != temperature || displayedHumidity != humidity)) {
-        drawMeasurements(temperature, humidity);
-        displayedTemperature = temperature;
-        displayedHumidity = humidity;
+    if (updatingFirmware) {
+        if (!displayingUpdate) drawFirmwareUpdate();
+        displayingUpdate = true;
+        return;
     }
+    if (!sampleDue && !displayingUpdate) return;
+    const auto latest = latestAmbient();
+    if (displayingUpdate || displayedTemperature != latest.temperature || displayedHumidity != latest.humidity) {
+        drawMeasurements(latest.temperature, latest.humidity);
+        displayedTemperature = latest.temperature;
+        displayedHumidity = latest.humidity;
+    }
+    displayingUpdate = false;
 }
 
 void formatAmbientStatus(char (&json)[AMBIENT_STATUS_SIZE]) {

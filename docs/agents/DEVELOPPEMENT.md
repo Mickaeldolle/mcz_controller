@@ -28,3 +28,7 @@ Pour un essai physique, suis [le guide API](../API.md). Distingue le
 statut USB ou HTTP, l’émission rapportée par l’ESP32 et l’action
 observée sur le poêle. Une absence de confirmation impose une observation
 avant toute nouvelle commande.
+
+Pour vérifier le téléversement Wi-Fi, compile aussi la variante
+`esp32dev-alexa-temperature` et suis la [procédure OTA](../TELEVERSEMENT_WIFI.md).
+Les tests Python OTA simulent l’ESP32 et n’ouvrent aucun port série.

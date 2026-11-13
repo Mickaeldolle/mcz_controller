@@ -23,6 +23,12 @@ Deux entrées partagent le même moteur de commande ESP32.
   intègre la même table au firmware lors de la compilation.
 - `app/network_setup.py` configure la connexion et la clé via USB.
   L’ESP32 conserve les paramètres en NVS et écoute seulement après connexion.
+- La variante Alexa avec écran peut recevoir le binaire via
+  [`app/ota.py`](../../app/ota.py) et un serveur HTTP OTA distinct sur le même
+  sous-réseau. [`src/mcz_ota.cpp`](../../src/mcz_ota.cpp) authentifie chaque
+  image avec une clé dédiée et écrit dans l’emplacement inactif. Le verrou
+  partagé interdit le démarrage d’une mise à jour pendant une émission et
+  empêche les nouvelles émissions pendant l’écriture.
 
 Voir [l’API et les protections](../API.md) et le
 [protocole radio](../FONCTIONNEMENT_TRAMES_MCZ.md).

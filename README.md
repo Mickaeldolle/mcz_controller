@@ -56,6 +56,9 @@ La page de test donne accès aux commandes à tout appareil autorisé à
 l’ouvrir. La page et l’API utilisent HTTP sur le réseau domestique de confiance.
 Le contrat [API v1](docs/API.md#contrat) servira aussi à la future application Kotlin.
 
+La variante Alexa avec écran accepte le [téléversement par Wi-Fi](docs/TELEVERSEMENT_WIFI.md)
+après une première installation et une configuration par USB.
+
 Le catalogue [CSV](config/catalogue_mcz.csv) s’appuie sur la
 [capture d’origine](captures/20261109-205625-968354_live.log) et la
 [capture du ventilateur 2](captures/20261110-065656-157595_live.log).

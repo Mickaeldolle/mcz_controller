@@ -37,6 +37,15 @@ def status(port, timeout=1):
     return wait_message(port, "network", timeout)
 
 
+def wait_for_firmware(port):
+    # Opening USB can reboot the ESP32. Only status queries may be repeated.
+    for _ in range(4):
+        state = status(port)
+        if state is not None:
+            return state
+    raise ValueError("Firmware API v1 non détecté sur ce port.")
+
+
 def credentials():
     ssid = input("Nom du Wi-Fi 2,4 GHz : ").encode()
     with warnings.catch_warnings():
@@ -76,14 +85,7 @@ def main():
         command = None if args.status else b"!WIFI CLEAR\n" if args.forget else credentials()
         with serial.Serial(args.port, 115200, timeout=.2, write_timeout=2) as port:
             port.dtr = port.rts = False
-            # Opening USB can reboot the ESP32. Only status queries may be repeated.
-            state = None
-            for _ in range(4):
-                state = status(port)
-                if state is not None:
-                    break
-            if state is None:
-                raise ValueError("Firmware API v1 non détecté sur ce port.")
+            state = wait_for_firmware(port)
             if command is None:
                 show_status(state)
                 return 0
