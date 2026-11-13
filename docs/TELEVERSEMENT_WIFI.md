@@ -75,5 +75,5 @@ redémarrage.
 Le 13 novembre 2026, le téléversement USB sur COM3 a réussi et les
 données écrites ont été vérifiées. Après redémarrage, le statut USB a
 confirmé la connexion Wi-Fi sur le port 8080, 18 °C, 64 % d’humidité et
-un compteur radio à zéro. Le transfert Wi-Fi et son affichage OLED
-restent à valider sur la carte.
+un compteur radio à zéro. Le propriétaire a ensuite confirmé le bon
+fonctionnement du téléversement Wi-Fi et de son affichage OLED sur la carte.
